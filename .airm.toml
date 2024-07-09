@@ -4,8 +4,8 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "tmp\\crm-server.exe"
-  cmd = "swag init --parseDependency && go build -o ./tmp/crm-server.exe ."
+  bin = "./tmp/crm-server"
+  cmd = "go build -o ./tmp/crm-server ./src/cmd/main.go"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []

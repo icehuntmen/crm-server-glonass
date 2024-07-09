@@ -11,10 +11,10 @@ BINARY := $(BIN_DIR)/$(PROJECT_NAME)
 # Define Go command
 GO := go
 
-.PHONY: all build
+.PHONY: run
 
 # Default target: build the project
-all: build run
+all: run
 
 # Build the project
 build: $(BINARY)
@@ -25,7 +25,7 @@ $(BINARY): $(SRC_DIRS)
 	$(GO) build -o $(BINARY) ./src/cmd/main.go
 
 run:
-	./bin/service
+	air -c .airm.toml
 
 # Run tests
 test:
