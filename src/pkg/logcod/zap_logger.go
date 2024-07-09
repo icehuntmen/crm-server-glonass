@@ -42,7 +42,7 @@ func (l *zapLogger) getLogLevel() zapcore.Level {
 
 func (l *zapLogger) Init() {
 	once.Do(func() {
-		fileName := fmt.Sprintf("%s%s-%s.%s", l.cfg.Logger.FilePath, time.Now().Format("2024-01-01"), uuid.New(), "log")
+		fileName := fmt.Sprintf("%s%s-%s.%s", l.cfg.Logger.FilePath, time.Now().Format("2024-01-01"), uuid.New(), "json")
 		w := zapcore.AddSync(&lumberjack.Logger{
 			Filename:   fileName,
 			MaxSize:    1,

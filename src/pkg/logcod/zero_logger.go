@@ -45,7 +45,7 @@ func (l *zeroLogger) getLogLevel() zerolog.Level {
 func (l *zeroLogger) Init() {
 	once.Do(func() {
 		zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
-		fileName := fmt.Sprintf("%s%s-%s.%s", l.cfg.Logger.FilePath, time.Now().Format("2006-01-02"), uuid.New(), "log")
+		fileName := fmt.Sprintf("logs/%s%s-%s.%s", l.cfg.Logger.FilePath, time.Now().Format("2024-01-01"), uuid.New(), "json")
 
 		file, err := os.OpenFile(fileName, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 		if err != nil {
