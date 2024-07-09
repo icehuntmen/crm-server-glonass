@@ -37,5 +37,5 @@ clean:
 	rm -rf $(BIN_DIR)
 
 docker :
-	docker-compose -f docker/docker-compose.yaml up -d --build
+	docker-compose -f docker/docker-compose.yml up -d --build
 

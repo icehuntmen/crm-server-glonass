@@ -15,6 +15,4 @@ func main() {
 	conf := config.GetConfig()
 
 	mongox.Connection(conf, logcod)
-
-	select {}
 }
