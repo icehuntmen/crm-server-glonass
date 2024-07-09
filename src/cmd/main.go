@@ -3,17 +3,18 @@ package main
 import (
 	"crm-glonass/src/config"
 	mongox "crm-glonass/src/data/db"
-	"crm-glonass/src/pkg/logcod"
+	"crm-glonass/src/pkg/logging"
 )
 
-var logger = logcod.NewLogger(config.GetConfig())
+var logcod = logging.NewLogger(config.GetConfig())
 
 func main() {
 
-	logger.Info(logcod.General, logcod.StartUp, "Started", nil)
+	logcod.Info(logging.General, logging.StartUp, "Started server...", nil)
+
 	conf := config.GetConfig()
 
-	mongox.Connection(conf)
+	mongox.Connection(conf, logcod)
 
 	select {}
 }

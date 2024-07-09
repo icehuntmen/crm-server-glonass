@@ -1,4 +1,6 @@
+
 server:
+  timeZone: Europe/Moscow
   internalPort: 5100
   externalPort: 5100
   runMode: debug
@@ -10,10 +12,10 @@ server:
   smtpAuth: true
   smtpSecure: true
 logger:
-  filePath: ./logs
+  filePath: ./logs/
   encoding: json
   level: debug
-  logcod: zerolog
+  logger: logrus
 cors:
   allowOrigins: "*"
 mongox:
