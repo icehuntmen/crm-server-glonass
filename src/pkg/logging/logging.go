@@ -1,4 +1,4 @@
-package logcod
+package logging
 
 import (
 	"crm-glonass/src/config"
@@ -24,11 +24,14 @@ type Logger interface {
 }
 
 func NewLogger(cfg *config.Config) Logger {
-	if cfg.Logger.Logger == "zap" {
+
+	if cfg.Logger.Logger == "logrus" {
+		return newLogrusLogger(cfg)
+	} else if cfg.Logger.Logger == "zap" {
 		return newZapLogger(cfg)
 	} else if cfg.Logger.Logger == "zerolog" {
 		return newZeroLogger(cfg)
 	} else {
-		panic("logcod not supported")
+		panic("logging not supported")
 	}
 }

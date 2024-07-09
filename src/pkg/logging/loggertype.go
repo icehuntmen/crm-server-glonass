@@ -1,4 +1,4 @@
-package logcod
+package logging
 
 type Category string
 type SubCategory string
@@ -17,6 +17,8 @@ const (
 )
 
 const (
+	Connection      SubCategory = "Connection"
+	Disconnection   SubCategory = "Disconnection"
 	Create          SubCategory = "Create"
 	Find            SubCategory = "Find"
 	Save            SubCategory = "Save"
