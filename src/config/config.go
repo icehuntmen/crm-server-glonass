@@ -9,7 +9,8 @@ import (
 )
 
 type Config struct {
-	Server struct {
+	TimeZone string `yaml:"timeZone"`
+	Server   struct {
 		IPort   int    `yaml:"internalPort"`
 		EPort   int    `yaml:"externalPort"`
 		RunMode string `yaml:"runMode"`
@@ -27,7 +28,7 @@ type Config struct {
 		FilePath string `yaml:"filePath"`
 		Encoding string `yaml:"encoding"`
 		Level    string `yaml:"level"`
-		Logger   string `yaml:"logcod"`
+		Logger   string `yaml:"logger"`
 	}
 	Cors struct {
 		AllowOrigins string `yaml:"allowOrigins"`
