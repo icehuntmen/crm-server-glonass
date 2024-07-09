@@ -21,8 +21,8 @@ build: $(BINARY)
 
 # Build binary
 $(BINARY): $(SRC_DIRS)
-	mkdir -p $(BIN_DIR)
-	$(GO) build -o $(BINARY) ./src/cmd/main.go
+	## mkdir -p $(BIN_DIR)
+	## $(GO) build -o $(BINARY) ./src/cmd/main.go
 
 run:
 	air -c .airm.toml
