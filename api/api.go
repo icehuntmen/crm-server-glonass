@@ -3,6 +3,7 @@ package api
 import (
 	routers "crm-glonass/api/routes"
 	"crm-glonass/config"
+	"crm-glonass/docs"
 	_ "crm-glonass/docs"
 	"crm-glonass/middlewares"
 	"crm-glonass/pkg/logging"
@@ -23,6 +24,7 @@ func InitialServer(cfg *config.Config) {
 	r.Use(gin.Logger(), gin.CustomRecovery(middlewares.ErrorHandler), middlewares.LimitByRequest())
 
 	RegisterRouter(r)
+	RegisterSwagger(r, cfg)
 
 	logcod.Info(logging.API, logging.StartUp, "Started API", nil)
 	err := r.Run(fmt.Sprintf(":%d", cfg.Server.IPort))
@@ -31,20 +33,19 @@ func InitialServer(cfg *config.Config) {
 	}
 }
 
-// @title           CRM COMECORD [DEV]
-// @version         0.1.0
-// @description     Система управления и мониторинга транспортных средств с системой GLONASS
-// @termsOfService  http://swagger.io/terms/
+func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
+	docs.SwaggerInfo.Title = "COMECORD"
+	docs.SwaggerInfo.Description = "Система управление и мониторинга транспортных средст с системой GLONASS"
+	docs.SwaggerInfo.Version = "0.1.0"
+	docs.SwaggerInfo.BasePath = "/api"
+	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%d", cfg.Server.EPort)
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
-// @contact.name   Alexander Hunter
-// @contact.url    http://www.swagger.io/support
-// @contact.email  icehuntmen@gmail.com
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
 
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host      localhost:5100
-// @BasePath  /api/v1
 
 // @securityDefinitions.basic  BasicAuth
 
@@ -57,8 +58,5 @@ func RegisterRouter(r *gin.Engine) {
 		health := v1.Group("/health")
 		routers.Health(health)
 	}
-
-	// Swagger
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 }

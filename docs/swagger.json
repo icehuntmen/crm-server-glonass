@@ -1,22 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Система управления и мониторинга транспортных средств с системой GLONASS",
-        "title": "CRM COMECORD [DEV]",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "Alexander Hunter",
-            "url": "http://www.swagger.io/support",
-            "email": "icehuntmen@gmail.com"
-        },
+        "contact": {},
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "0.1.0"
+        }
     },
-    "host": "localhost:5100",
-    "basePath": "/api/v1",
     "paths": {
         "/api/v1/health/": {
             "get": {
