@@ -18,3 +18,11 @@ const (
 	RolesKey               string = "Roles"
 	ExpireTimeKey          string = "ExpireTime"
 )
+
+const (
+	// Roles
+	RoleAdminName   string = "admin"
+	RoleManagerName string = "manager"
+	RoleAgentName   string = "agent"
+	RoleUserName    string = "user"
+)
