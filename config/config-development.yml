@@ -30,7 +30,7 @@ mongox:
 redis:
   host: localhost
   port: 6379
-  password: password
+  password: crmredis2024
   db: 0
   dialTimeout: 5
   readTimeout: 5

@@ -17,6 +17,7 @@ services:
 
   redis:
     image: redis:alpine
+    command: redis-server --requirepass crmredis2024
     container_name: crmglonass-redis
     ports:
       - '6379:6379'

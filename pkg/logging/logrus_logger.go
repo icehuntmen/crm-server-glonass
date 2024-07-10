@@ -1,7 +1,7 @@
 package logging
 
 import (
-	"crm-glonass/src/config"
+	"crm-glonass/config"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/natefinch/lumberjack"

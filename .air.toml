@@ -5,9 +5,9 @@ tmp_dir = "tmp"
 [build]
   args_bin = []
   bin = "tmp\\crm-server.exe"
-  cmd = "go build -o ./tmp/crm-server.exe ./src/cmd/main.go"
+  cmd = "swag init -g api/api.go --parseDependency --parseInternal && go build -o ./tmp/crm-server.exe ./cmd/main.go"
   delay = 1000
-  exclude_dir = ["assets", "tmp", "vendor", "testdata"]
+  exclude_dir = ["assets","docs", "tmp", "vendor", "testdata"]
   exclude_file = []
   exclude_regex = ["_test.go"]
   exclude_unchanged = false

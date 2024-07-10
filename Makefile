@@ -24,6 +24,9 @@ $(BINARY): $(SRC_DIRS)
 	## mkdir -p $(BIN_DIR)
 	## $(GO) build -o $(BINARY) ./src/cmd/main.go
 
+sw:
+	swag init -g cmd/main.go --parseDependency --parseInternal
+
 run:
 	air -c .airm.toml
 
@@ -36,6 +39,9 @@ test:
 clean:
 	rm -rf $(BIN_DIR)
 
-docker :
-	docker-compose -f docker/docker-compose.yml up -d --build
 
+deploy:
+	docker-compose up -d --build
+
+down:
+	docker-compose down

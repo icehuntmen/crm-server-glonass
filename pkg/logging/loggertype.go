@@ -9,7 +9,7 @@ const (
 	Internal        Category = "Internal"
 	MongoDB         Category = "Mongo"
 	Redis           Category = "Redis"
-	HTTP            Category = "HTTP"
+	API             Category = "API"
 	RequestResponse Category = "RequestResponse"
 	Email           Category = "Email"
 	IO              Category = "SocketIO"

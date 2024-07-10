@@ -2,8 +2,8 @@ package mongox
 
 import (
 	"context"
-	"crm-glonass/src/config"
-	"crm-glonass/src/pkg/logging"
+	"crm-glonass/config"
+	"crm-glonass/pkg/logging"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -14,16 +14,13 @@ import (
 var (
 	MongoServer *mongo.Client
 	DB          *mongo.Database
-	ctx         context.Context
 )
 
-func Connection(conf *config.Config, logger logging.Logger) {
+func Connection(conf *config.Config, ctx context.Context, logger logging.Logger) {
 
 	mongoUrl := fmt.Sprintf(`mongodb://%s:%s@%s:%s/%s?authSource=%s`,
 		conf.MongoX.Username, conf.MongoX.Password, conf.MongoX.Host, conf.MongoX.Port,
 		conf.MongoX.Database, conf.MongoX.AuthSource)
-
-	ctx = context.Background()
 
 	// Connect to MongoDB
 	mongoconn := options.Client().ApplyURI(mongoUrl)
