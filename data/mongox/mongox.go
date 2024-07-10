@@ -16,7 +16,11 @@ var (
 	DB          *mongo.Database
 )
 
-func Connection(conf *config.Config, ctx context.Context, logger logging.Logger) {
+type Database struct {
+	DB *mongo.Database
+}
+
+func Connection(conf *config.Config, ctx context.Context, logger logging.Logger) *mongo.Database {
 
 	mongoUrl := fmt.Sprintf(`mongodb://%s:%s@%s:%s/%s?authSource=%s`,
 		conf.MongoX.Username, conf.MongoX.Password, conf.MongoX.Host, conf.MongoX.Port,
@@ -41,10 +45,19 @@ func Connection(conf *config.Config, ctx context.Context, logger logging.Logger)
 
 	logger.Info(logging.MongoDB, logging.Connection, "Database connection established.", nil)
 
-	defer func(MongoServer *mongo.Client, ctx context.Context) {
-		err := MongoServer.Disconnect(ctx)
-		if err != nil {
-			logger.Fatal(logging.MongoDB, logging.Disconnection, err.Error(), nil)
-		}
-	}(MongoServer, ctx)
+	//defer func(MongoServer *mongo.Client, ctx context.Context) {
+	//	err := MongoServer.Disconnect(ctx)
+	//	if err != nil {
+	//		logger.Fatal(logging.MongoDB, logging.Disconnection, err.Error(), nil)
+	//	}
+	//}(MongoServer, ctx)
+	return DB
+}
+
+func GetDB() *mongo.Database {
+	return DB
+}
+
+func GetMongoServer() *mongo.Client {
+	return MongoServer
 }

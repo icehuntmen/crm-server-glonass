@@ -5,7 +5,7 @@ import (
 	"crm-glonass/api"
 	"crm-glonass/config"
 	"crm-glonass/data/cache"
-	mongox "crm-glonass/data/db"
+	mongox "crm-glonass/data/mongox"
 	"crm-glonass/pkg/logging"
 )
 
@@ -19,8 +19,8 @@ func main() {
 
 	conf := config.GetConfig()
 
-	mongox.Connection(conf, ctx, logcod)
+	database := mongox.Connection(conf, ctx, logcod)
 	cache.InitRedis(conf, ctx)
 
-	api.InitialServer(conf)
+	api.InitialServer(conf, database, logcod)
 }

@@ -34,6 +34,38 @@ definitions:
     - OtpLimiterError
     - CustomRecovery
     - InternalError
+  dto.CreateVehicleRequestDTO:
+    properties:
+      location:
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      year:
+        type: integer
+    type: object
+  dto.DBVehicleDTO:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      updated_at:
+        type: string
+      year:
+        type: integer
+    type: object
   validations.ValidationError:
     properties:
       message:
@@ -73,6 +105,37 @@ paths:
       summary: Health Check
       tags:
       - Health Check
+  /v1/vehicles/:
+    post:
+      consumes:
+      - application/json
+      description: Create a vehicle
+      parameters:
+      - description: Create a vehicle model
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateVehicleRequestDTO'
+      responses:
+        "201":
+          description: Created response
+          schema:
+            allOf:
+            - $ref: '#/definitions/components.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/dto.DBVehicleDTO'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a vehicle
+      tags:
+      - Vehicles
 securityDefinitions:
   BasicAuth:
     type: basic

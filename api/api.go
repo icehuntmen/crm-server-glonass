@@ -11,11 +11,10 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var logcod = logging.NewLogger(config.GetConfig())
-
-func InitialServer(cfg *config.Config) {
+func InitialServer(cfg *config.Config, database *mongo.Database, logger logging.Logger) {
 	gin.SetMode(cfg.Server.RunMode)
 	r := gin.New()
 
@@ -23,13 +22,13 @@ func InitialServer(cfg *config.Config) {
 	r.Use(middlewares.Cors(cfg))
 	r.Use(gin.Logger(), gin.CustomRecovery(middlewares.ErrorHandler), middlewares.LimitByRequest())
 
-	RegisterRouter(r)
+	RegisterRouter(r, cfg, database)
 	RegisterSwagger(r, cfg)
 
-	logcod.Info(logging.API, logging.StartUp, "Started API", nil)
+	logger.Info(logging.API, logging.StartUp, "Started API", nil)
 	err := r.Run(fmt.Sprintf(":%d", cfg.Server.IPort))
 	if err != nil {
-		logcod.Fatal(logging.API, logging.StartUp, err.Error(), nil)
+		logger.Fatal(logging.API, logging.StartUp, err.Error(), nil)
 	}
 }
 
@@ -51,10 +50,16 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
-func RegisterRouter(r *gin.Engine) {
+func RegisterRouter(r *gin.Engine, conf *config.Config, db *mongo.Database) {
 	api := r.Group("/api")
 	v1 := api.Group("/v1")
 	{
+
+		//vehiclesA := v1.Group("/vehicles")
+		vehiclesB := v1.Group("/vehicles", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+
+		//routers.Vehicles(vehiclesA, db.Collection("vehicles"))
+		routers.Vehicles(vehiclesB, db.Collection("vehicles"))
 		health := v1.Group("/health")
 		routers.Health(health)
 	}

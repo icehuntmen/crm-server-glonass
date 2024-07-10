@@ -47,7 +47,7 @@ type Config struct {
 		Host               string        `yaml:"host"`
 		Port               int           `yaml:"port"`
 		Password           string        `yaml:"password"`
-		Db                 int           `yaml:"db"`
+		Db                 int           `yaml:"mongox"`
 		DialTimeout        time.Duration `json:"dialTimeout"`
 		ReadTimeout        time.Duration `json:"readTimeout"`
 		WriteTimeout       time.Duration `json:"writeTimeout"`
