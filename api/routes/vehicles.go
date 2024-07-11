@@ -11,10 +11,10 @@ import (
 
 var log = logging.NewLogger(config.GetConfig())
 
-func Vehicles(r *gin.RouterGroup, collection *mongo.Collection) {
-
+func Vehicles(r *gin.RouterGroup, db *mongo.Database) {
+	cfg := config.GetConfig()
 	ctx := context.Background()
-	h := controllers.NewVehiclesController(collection, ctx, log)
+	h := controllers.NewVehiclesController(db, ctx, cfg)
 	//
 	r.POST("/", h.Create)
 	//r.PATCH("/:id", h.Update)

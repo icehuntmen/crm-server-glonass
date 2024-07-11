@@ -55,13 +55,13 @@ func RegisterRouter(r *gin.Engine, conf *config.Config, db *mongo.Database) {
 	v1 := api.Group("/v1")
 	{
 
-		//vehiclesA := v1.Group("/vehicles")
-		vehiclesB := v1.Group("/vehicles", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+		vehicles := v1.Group("/vehicles", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
+		routers.Vehicles(vehicles, db)
 
-		//routers.Vehicles(vehiclesA, db.Collection("vehicles"))
-		routers.Vehicles(vehiclesB, db.Collection("vehicles"))
 		health := v1.Group("/health")
 		routers.Health(health)
 	}
+
+	r.Static("/static", "./uploads")
 
 }
