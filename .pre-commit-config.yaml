@@ -1,10 +1,11 @@
 repos:
   - repo: https://github.com/icehuntmen/pre-commit-golang
-    rev: master
+    rev: cd54b428907edd1dc3e835bf6d25255a3c30b3fb
     hooks:
       - id: go-fmt-import
       - id: go-vet
       - id: go-lint
+      - id: go-version
       - id: go-unit-tests
       - id: gofumpt # requires github.com/mvdan/gofumpt
       - id: go-err-check # requires github.com/kisielk/errcheck
