@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"context"
-	"crm-glonass/models"
-	"crm-glonass/pkg/logging"
+	"crm-glonass/config"
+	"crm-glonass/data/models"
 	"crm-glonass/services"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -14,8 +14,8 @@ type VehiclesController struct {
 	service *services.VehicleService
 }
 
-func NewVehiclesController(collection *mongo.Collection, ctx context.Context, logger logging.Logger) *VehiclesController {
-	service, ok := services.NewVehicleService(collection, ctx, logger).(*services.VehicleService)
+func NewVehiclesController(db *mongo.Database, ctx context.Context, conf *config.Config) *VehiclesController {
+	service, ok := services.NewVehicleService(db, conf, ctx, "vehicles").(*services.VehicleService)
 	if !ok {
 		// handle the error case where the type assertion fails
 		return nil

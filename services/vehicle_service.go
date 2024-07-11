@@ -2,7 +2,8 @@ package services
 
 import (
 	"context"
-	"crm-glonass/models"
+	"crm-glonass/config"
+	"crm-glonass/data/models"
 	"crm-glonass/pkg/logging"
 	"crm-glonass/pkg/tools"
 	"errors"
@@ -15,9 +16,10 @@ import (
 )
 
 type VehicleService struct {
-	vehicleCollection *mongo.Collection
-	ctx               context.Context
-	logger            logging.Logger
+	Mongo      *mongo.Database
+	Collection *mongo.Collection
+	ctx        context.Context
+	logger     logging.Logger
 }
 
 type VehicleServiceApi interface {
@@ -65,8 +67,13 @@ type VehicleServiceApi interface {
 	Delete(string) error
 }
 
-func NewVehicleService(vehicleCollection *mongo.Collection, ctx context.Context, logger logging.Logger) VehicleServiceApi {
-	return &VehicleService{vehicleCollection, ctx, logger}
+func NewVehicleService(db *mongo.Database, cfg *config.Config, ctx context.Context, collectionName string) VehicleServiceApi {
+	return &VehicleService{
+		Mongo:      db,
+		Collection: db.Collection(collectionName),
+		ctx:        ctx,
+		logger:     logging.NewLogger(cfg),
+	}
 }
 
 // CreatePost creates a new vehicle post using the provided request.
@@ -80,7 +87,7 @@ func (p *VehicleService) Create(vehicle *models.CreateVehicleRequest) (*models.D
 	vehicle.CreatedAt = time.Now()
 	vehicle.UpdatedAt = vehicle.CreatedAt
 	fmt.Println(vehicle)
-	res, err := p.vehicleCollection.InsertOne(p.ctx, vehicle)
+	res, err := p.Collection.InsertOne(p.ctx, vehicle)
 
 	if err != nil {
 		if er, ok := err.(mongo.WriteException); ok && er.WriteErrors[0].Code == 11000 {
@@ -94,13 +101,13 @@ func (p *VehicleService) Create(vehicle *models.CreateVehicleRequest) (*models.D
 
 	index := mongo.IndexModel{Keys: bson.M{"name": 1}, Options: opt}
 
-	if _, err := p.vehicleCollection.Indexes().CreateOne(p.ctx, index); err != nil {
+	if _, err := p.Collection.Indexes().CreateOne(p.ctx, index); err != nil {
 		return nil, errors.New("could not create index for title")
 	}
 
 	var newPost *models.DBVehicle
 	query := bson.M{"_id": res.InsertedID}
-	if err = p.vehicleCollection.FindOne(p.ctx, query).Decode(&newPost); err != nil {
+	if err = p.Collection.FindOne(p.ctx, query).Decode(&newPost); err != nil {
 		return nil, err
 	}
 
@@ -124,7 +131,7 @@ func (p *VehicleService) Update(id string, data *models.UpdateVehicleRequest) (*
 	obId, _ := primitive.ObjectIDFromHex(id)
 	query := bson.D{{Key: "_id", Value: obId}}
 	update := bson.D{{Key: "$set", Value: doc}}
-	res := p.vehicleCollection.FindOneAndUpdate(p.ctx, query, update, options.FindOneAndUpdate().SetReturnDocument(1))
+	res := p.Collection.FindOneAndUpdate(p.ctx, query, update, options.FindOneAndUpdate().SetReturnDocument(1))
 
 	var updatedPost *models.DBVehicle
 	if err := res.Decode(&updatedPost); err != nil {
@@ -150,7 +157,7 @@ func (p *VehicleService) FindById(id string) (*models.DBVehicle, error) {
 
 	var vehicle *models.DBVehicle
 
-	if err := p.vehicleCollection.FindOne(p.ctx, query).Decode(&vehicle); err != nil {
+	if err := p.Collection.FindOne(p.ctx, query).Decode(&vehicle); err != nil {
 		if err == mongo.ErrNoDocuments {
 			return nil, errors.New("no document with that Id exists")
 		}
@@ -187,7 +194,7 @@ func (p *VehicleService) Find(page int, limit int) ([]*models.DBVehicle, error) 
 
 	query := bson.M{}
 
-	cursor, err := p.vehicleCollection.Find(p.ctx, query, &opt)
+	cursor, err := p.Collection.Find(p.ctx, query, &opt)
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +237,7 @@ func (p *VehicleService) Delete(id string) error {
 	obId, _ := primitive.ObjectIDFromHex(id)
 	query := bson.M{"_id": obId}
 
-	res, err := p.vehicleCollection.DeleteOne(p.ctx, query)
+	res, err := p.Collection.DeleteOne(p.ctx, query)
 	if err != nil {
 		return err
 	}
