@@ -2,7 +2,7 @@ repos:
   -   repo: local
       hooks:
         -   id: update-version
-            name: Update Version
-            entry: bash -c './update_version.sh'
+            name: go update version
+            entry: bash -c 'update_version.sh'
             language: system
             files: VERSION
