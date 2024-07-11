@@ -1,35 +1,32 @@
 package middlewares
 
 import (
-	"bufio"
-	"fmt"
+	"log"
 	"os"
 )
 
 var Version string
 
-func init() {
+func GetVersion() (string, error) {
 	file, err := os.Open("./VERSION")
 	if err != nil {
-		fmt.Println("Ошибка при открытии файла VERSION:", err)
-		return
+		log.Fatal("Error opening file:", err)
+		return "", err
 	}
 	defer file.Close()
 
-	// Чтение первой строки из файла
-	scanner := bufio.NewScanner(file)
-	if scanner.Scan() {
-		Version = scanner.Text() // Присваиваем считанную версию переменной Version
-	} else {
-		fmt.Println("Файл VERSION пуст или пусты строка")
+	stat, err := file.Stat()
+	if err != nil {
+		log.Fatal("Error getting file information:", err)
+		return "", err
 	}
 
-	if err := scanner.Err(); err != nil {
-		fmt.Println("Ошибка при чтении файла VERSION:", err)
-		return
+	data := make([]byte, stat.Size())
+	_, err = file.Read(data)
+	if err != nil {
+		log.Fatal("Error reading file:", err)
+		return "", err
 	}
-}
 
-func GetVersion() string {
-	return Version
+	return string(data), nil
 }

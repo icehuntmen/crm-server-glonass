@@ -29,8 +29,8 @@ type CreateVehicleRequest struct {
 	Year      int       `json:"year,omitempty" bson:"year,omitempty"`
 	Price     int       `json:"price,omitempty" bson:"price,omitempty"`
 	Location  string    `json:"location,omitempty" bson:"location,omitempty"`
-	CreatedAt time.Time `json:"created_at,omitempty" bson:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty" bson:"updated_at,omitempty"`
+	CreatedAt time.Time `json:"-" bson:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"-" bson:"updated_at,omitempty"`
 }
 
 type DBVehicle struct {

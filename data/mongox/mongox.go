@@ -4,60 +4,42 @@ import (
 	"context"
 	"crm-glonass/config"
 	"crm-glonass/pkg/logging"
+	"errors"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-var (
-	MongoServer *mongo.Client
-	DB          *mongo.Database
-)
+var mongoClient *mongo.Client
 
-type Database struct {
-	DB *mongo.Database
-}
-
-func Connection(conf *config.Config, ctx context.Context, logger logging.Logger) *mongo.Database {
-
+func InitMongoClient(conf *config.Config, ctx context.Context, logger logging.Logger) error {
 	mongoUrl := fmt.Sprintf(`mongodb://%s:%s@%s:%s/%s?authSource=%s`,
 		conf.MongoX.Username, conf.MongoX.Password, conf.MongoX.Host, conf.MongoX.Port,
 		conf.MongoX.Database, conf.MongoX.AuthSource)
 
-	// Connect to MongoDB
 	mongoconn := options.Client().ApplyURI(mongoUrl)
-	MongoServer, err := mongo.Connect(ctx, mongoconn)
+	var err error
+	mongoClient, err = mongo.Connect(ctx, mongoconn)
 	if err != nil {
 		logger.Fatal(logging.MongoDB, logging.Connection, err.Error(), nil)
 	}
+	return nil
+}
 
-	if err := MongoServer.Ping(ctx, readpref.Primary()); err != nil {
-		logger.Error(logging.MongoDB, logging.Connection, err.Error(), nil)
+func Execute(ctx context.Context, conf *config.Config, operation func(*mongo.Database) error) error {
+	if mongoClient == nil {
+		return errors.New("MongoDB client is not initialized")
 	}
 
-	DB := MongoServer.Database(conf.MongoX.Database)
-	_, err = DB.Collection("settings").InsertOne(ctx, bson.D{{"key", "value"}})
+	db := mongoClient.Database(conf.MongoX.Database)
+	return operation(db)
+}
+
+func Connection(conf *config.Config, ctx context.Context, logger logging.Logger) (*mongo.Database, error) {
+	err := InitMongoClient(conf, ctx, logger)
 	if err != nil {
-		logger.Fatal(logging.MongoDB, logging.Insert, err.Error(), nil)
+		return nil, err
 	}
-
 	logger.Info(logging.MongoDB, logging.Connection, "Database connection established.", nil)
-
-	//defer func(MongoServer *mongo.Client, ctx context.Context) {
-	//	err := MongoServer.Disconnect(ctx)
-	//	if err != nil {
-	//		logger.Fatal(logging.MongoDB, logging.Disconnection, err.Error(), nil)
-	//	}
-	//}(MongoServer, ctx)
-	return DB
-}
-
-func GetDB() *mongo.Database {
-	return DB
-}
-
-func GetMongoServer() *mongo.Client {
-	return MongoServer
+	return mongoClient.Database(conf.MongoX.Database), nil
 }

@@ -36,8 +36,6 @@ definitions:
     - InternalError
   dto.CreateVehicleRequest:
     properties:
-      created_at:
-        type: string
       location:
         type: string
       model:
@@ -46,8 +44,6 @@ definitions:
         type: string
       price:
         type: integer
-      updated_at:
-        type: string
       year:
         type: integer
     type: object

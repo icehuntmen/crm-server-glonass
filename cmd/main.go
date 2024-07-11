@@ -11,7 +11,7 @@ import (
 )
 
 var logger = logging.NewLogger(config.GetConfig())
-var version = middlewares.GetVersion()
+var version, _ = middlewares.GetVersion()
 
 func main() {
 
@@ -21,8 +21,9 @@ func main() {
 
 	conf := config.GetConfig()
 
-	database := mongox.Connection(conf, ctx, logger)
+	database, _ := mongox.Connection(conf, ctx, logger)
 	cache.InitRedis(conf, ctx)
-
+	logger.Infof("Listening on Swagger http://localhost:%d/swagger/index.html", conf.Server.IPort)
 	api.InitialServer(conf, database, logger)
+
 }

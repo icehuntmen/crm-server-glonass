@@ -151,9 +151,6 @@ const docTemplate = `{
         "dto.CreateVehicleRequest": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
                 "location": {
                     "type": "string"
                 },
@@ -165,9 +162,6 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
                 },
                 "year": {
                     "type": "integer"
