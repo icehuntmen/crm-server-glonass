@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
+	"crm-glonass/api/dto"
 	"crm-glonass/config"
-	"crm-glonass/data/models"
 	"crm-glonass/pkg/logging"
 	"crm-glonass/pkg/tools"
 	"errors"
@@ -29,9 +29,9 @@ type VehicleServiceApi interface {
 	// - post: The request containing the data for the new post.
 	//
 	// Returns:
-	// - *models.DBVehicle: The newly created post.
+	// - *dto.DBVehicle: The newly created post.
 	// - error: An error if the creation operation fails.
-	Create(*models.CreateVehicleRequest) (*models.DBVehicle, error)
+	Create(*dto.CreateVehicleRequest) (*dto.DBVehicle, error)
 	// Update updates a vehicle post with the given ID using the provided data.
 	//
 	// Parameters:
@@ -39,17 +39,17 @@ type VehicleServiceApi interface {
 	// - data: The updated data for the vehicle post.
 	//
 	// Returns:
-	// - *models.DBVehicle: The updated vehicle post.
+	// - *dto.DBVehicle: The updated vehicle post.
 	// - error: An error if the update operation fails.
-	Update(string, *models.UpdateVehicleRequest) (*models.DBVehicle, error)
+	Update(string, *dto.UpdateVehicleRequest) (*dto.DBVehicle, error)
 	// FindById retrieves a DBVehicle object based on the provided ID.
 	//
 	// Parameters:
 	// - id: The ID of the post to retrieve.
 	// Return type:
-	// - *models.DBVehicle: A pointer to the retrieved post.
+	// - *dto.DBVehicle: A pointer to the retrieved post.
 	// - error: An error if the retrieval operation fails.
-	FindById(string) (*models.DBVehicle, error)
+	FindById(string) (*dto.DBVehicle, error)
 	// Find retrieves a list of DBVehicle objects based on the provided page and limit.
 	//
 	// Parameters:
@@ -57,9 +57,9 @@ type VehicleServiceApi interface {
 	// - limit: The maximum number of results to retrieve per page. Defaults to 10 if not provided.
 	//
 	// Returns:
-	// - []*models.DBVehicle: A slice of pointers to DBVehicle objects representing the retrieved posts.
+	// - []*dto.DBVehicle: A slice of pointers to DBVehicle objects representing the retrieved posts.
 	// - error: An error if the retrieval operation fails.
-	Find(page int, limit int) ([]*models.DBVehicle, error)
+	Find(page int, limit int) ([]*dto.DBVehicle, error)
 	// Delete deletes a post with the given ID.
 	//
 	// id: The ID of the post to be deleted.
@@ -81,9 +81,9 @@ func NewVehicleService(db *mongo.Database, cfg *config.Config, ctx context.Conte
 // Parameters:
 // - post: The request containing the data for the new post.
 // Returns:
-// - *models.DBVehicle: The newly created post.
+// - *dto.DBVehicle: The newly created post.
 // - error: An error if the creation operation fails.
-func (p *VehicleService) Create(vehicle *models.CreateVehicleRequest) (*models.DBVehicle, error) {
+func (p *VehicleService) Create(vehicle *dto.CreateVehicleRequest) (*dto.DBVehicle, error) {
 	vehicle.CreatedAt = time.Now()
 	vehicle.UpdatedAt = vehicle.CreatedAt
 	fmt.Println(vehicle)
@@ -105,7 +105,7 @@ func (p *VehicleService) Create(vehicle *models.CreateVehicleRequest) (*models.D
 		return nil, errors.New("could not create index for title")
 	}
 
-	var newPost *models.DBVehicle
+	var newPost *dto.DBVehicle
 	query := bson.M{"_id": res.InsertedID}
 	if err = p.Collection.FindOne(p.ctx, query).Decode(&newPost); err != nil {
 		return nil, err
@@ -120,9 +120,9 @@ func (p *VehicleService) Create(vehicle *models.CreateVehicleRequest) (*models.D
 // - id: The ID of the vehicle post to update.
 // - data: The updated data for the vehicle post.
 // Returns:
-// - *models.DBVehicle: The updated vehicle post.
+// - *dto.DBVehicle: The updated vehicle post.
 // - error: An error if the update operation fails.
-func (p *VehicleService) Update(id string, data *models.UpdateVehicleRequest) (*models.DBVehicle, error) {
+func (p *VehicleService) Update(id string, data *dto.UpdateVehicleRequest) (*dto.DBVehicle, error) {
 	doc, err := tools.ToDoc(data)
 	if err != nil {
 		return nil, err
@@ -133,7 +133,7 @@ func (p *VehicleService) Update(id string, data *models.UpdateVehicleRequest) (*
 	update := bson.D{{Key: "$set", Value: doc}}
 	res := p.Collection.FindOneAndUpdate(p.ctx, query, update, options.FindOneAndUpdate().SetReturnDocument(1))
 
-	var updatedPost *models.DBVehicle
+	var updatedPost *dto.DBVehicle
 	if err := res.Decode(&updatedPost); err != nil {
 		return nil, errors.New("no post with that Id exists")
 	}
@@ -147,15 +147,15 @@ func (p *VehicleService) Update(id string, data *models.UpdateVehicleRequest) (*
 // - id: The ID of the post to retrieve.
 //
 // Returns:
-//   - *models.DBVehicle: A pointer to the retrieved post.
+//   - *dto.DBVehicle: A pointer to the retrieved post.
 //   - error: An error if the retrieval operation fails. If the post with the given ID does not exist,
 //     an error with the message "no document with that Id exists" is returned.
-func (p *VehicleService) FindById(id string) (*models.DBVehicle, error) {
+func (p *VehicleService) FindById(id string) (*dto.DBVehicle, error) {
 	obId, _ := primitive.ObjectIDFromHex(id)
 
 	query := bson.M{"_id": obId}
 
-	var vehicle *models.DBVehicle
+	var vehicle *dto.DBVehicle
 
 	if err := p.Collection.FindOne(p.ctx, query).Decode(&vehicle); err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -174,9 +174,9 @@ func (p *VehicleService) FindById(id string) (*models.DBVehicle, error) {
 // - page: The page number for pagination. If 0, defaults to 1.
 // - limit: The maximum number of items to retrieve per page. If 0, defaults to 10.
 // Returns:
-// - []*models.DBVehicle: A slice of DBVehicle objects.
+// - []*dto.DBVehicle: A slice of DBVehicle objects.
 // - error: An error if the retrieval operation fails.
-func (p *VehicleService) Find(page int, limit int) ([]*models.DBVehicle, error) {
+func (p *VehicleService) Find(page int, limit int) ([]*dto.DBVehicle, error) {
 	if page == 0 {
 		page = 1
 	}
@@ -201,10 +201,10 @@ func (p *VehicleService) Find(page int, limit int) ([]*models.DBVehicle, error) 
 
 	defer cursor.Close(p.ctx)
 
-	var vehicles []*models.DBVehicle
+	var vehicles []*dto.DBVehicle
 
 	for cursor.Next(p.ctx) {
-		post := &models.DBVehicle{}
+		post := &dto.DBVehicle{}
 		err := cursor.Decode(post)
 
 		if err != nil {
@@ -219,7 +219,7 @@ func (p *VehicleService) Find(page int, limit int) ([]*models.DBVehicle, error) 
 	}
 
 	if len(vehicles) == 0 {
-		return []*models.DBVehicle{}, nil
+		return []*dto.DBVehicle{}, nil
 	}
 
 	return vehicles, nil

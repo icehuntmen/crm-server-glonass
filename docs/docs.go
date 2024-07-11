@@ -70,7 +70,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateVehicleRequestDTO"
+                            "$ref": "#/definitions/dto.CreateVehicleRequest"
                         }
                     }
                 ],
@@ -148,9 +148,12 @@ const docTemplate = `{
                 "InternalError"
             ]
         },
-        "dto.CreateVehicleRequestDTO": {
+        "dto.CreateVehicleRequest": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
                 "location": {
                     "type": "string"
                 },
@@ -162,6 +165,9 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
                 },
                 "year": {
                     "type": "integer"

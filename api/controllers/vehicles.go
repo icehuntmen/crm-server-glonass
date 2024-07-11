@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"context"
+	"crm-glonass/api/dto"
 	"crm-glonass/config"
-	"crm-glonass/data/models"
 	"crm-glonass/services"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -31,31 +31,42 @@ func NewVehiclesController(db *mongo.Database, ctx context.Context, conf *config
 // @Tags Vehicles
 // @Accept json
 // @produces json
-// @Param Request body dto.CreateVehicleRequestDTO true "Create a vehicle model"
+// @Param Request body dto.CreateVehicleRequest true "Create a vehicle model"
 // @Success 201 {object} components.BaseHttpResponse{result=dto.DBVehicleDTO} "Created response"
 // @Failure 400 {object} components.BaseHttpResponse "Bad request"
 // @Router /v1/vehicles/ [post]
 // @Security AuthBearer
-func (pc *VehiclesController) Create(ctx *gin.Context) {
-	var vehicle *models.CreateVehicleRequest
+func (vc *VehiclesController) Create(ctx *gin.Context) {
+	var vehicle *dto.CreateVehicleRequest
 
 	if err := ctx.ShouldBindJSON(&vehicle); err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	newPost, err := pc.service.Create(vehicle)
+	newPost, err := vc.service.Create(vehicle)
 
 	if err != nil {
-		//if strings.Contains(err.Error(), "title already exists") {
-		//	ctx.JSON(http.StatusConflict, gin.H{"status": "fail", "message": err.Error()})
-		//	return
-		//}
-		//
-		//ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": err.Error()})
+		// handle error
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{"status": "success", "data": newPost})
+}
+
+func (pc *VehiclesController) Update(ctx *gin.Context) {
+
+}
+
+func (pc *VehiclesController) Delete(ctx *gin.Context) {
+
+}
+
+func (pc *VehiclesController) GetById(ctx *gin.Context) {
+
+}
+
+func (pc *VehiclesController) GetByFilter(ctx *gin.Context) {
+
 }
