@@ -51,7 +51,7 @@ func RegisterValidator() {
 
 func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	docs.SwaggerInfo.Title = "COMECORD"
-	docs.SwaggerInfo.Description = "Система управление и мониторинга транспортных средст с системой GLONASS"
+	docs.SwaggerInfo.Description = "Система управление и мониторинга транспортных средств с системой GLONASS"
 	docs.SwaggerInfo.Version = "0.1.0"
 	docs.SwaggerInfo.BasePath = "/api"
 	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%d", cfg.Server.EPort)
