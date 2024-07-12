@@ -37,6 +37,49 @@
                 }
             }
         },
+        "/v1/members/": {
+            "post": {
+                "description": "Registration a member",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Registration a member",
+                "parameters": [
+                    {
+                        "description": "member",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.MemberCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/vehicles/": {
             "post": {
                 "security": [
@@ -183,6 +226,28 @@
                 },
                 "year": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.MemberCreate": {
+            "type": "object",
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "user@comecord.com"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "calista"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+7 (999) 999-99-99"
                 }
             }
         },

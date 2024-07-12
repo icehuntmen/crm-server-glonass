@@ -66,6 +66,22 @@ definitions:
       year:
         type: integer
     type: object
+  dto.MemberCreate:
+    properties:
+      email:
+        example: user@comecord.com
+        minLength: 6
+        type: string
+      password:
+        example: calista
+        minLength: 6
+        type: string
+      phone:
+        example: +7 (999) 999-99-99
+        type: string
+    required:
+    - password
+    type: object
   validations.ValidationError:
     properties:
       message:
@@ -105,6 +121,34 @@ paths:
       summary: Health Check
       tags:
       - Health Check
+  /v1/members/:
+    post:
+      consumes:
+      - application/json
+      description: Registration a member
+      parameters:
+      - description: member
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MemberCreate'
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Registration a member
+      tags:
+      - Members
   /v1/vehicles/:
     post:
       consumes:
