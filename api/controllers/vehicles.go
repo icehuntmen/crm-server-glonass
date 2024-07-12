@@ -34,7 +34,7 @@ func NewVehiclesController(db *mongo.Database, ctx context.Context, conf *config
 // @Param Request body dto.CreateVehicleRequest true "Create a vehicle model"
 // @Success 201 {object} components.BaseHttpResponse{result=dto.DBVehicleDTO} "Created response"
 // @Failure 400 {object} components.BaseHttpResponse "Bad request"
-// @Router /v1/vehicles/ [post]
+// @Router /api/v1/vehicles/ [post]
 // @Security AuthBearer
 func (vc *VehiclesController) Create(ctx *gin.Context) {
 	var vehicle *dto.CreateVehicleRequest

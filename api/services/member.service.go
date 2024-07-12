@@ -31,6 +31,10 @@ func NewMemberService(db *mongo.Database, cfg *config.Config, ctx context.Contex
 		Collection: db.Collection(collectionName),
 		ctx:        ctx,
 		logger:     logging.NewLogger(cfg),
+		tokenService: &TokenService{
+			logger: logging.NewLogger(cfg),
+			cfg:    cfg,
+		},
 	}
 }
 
@@ -78,6 +82,7 @@ func (m *MemberService) Register(memberCreate *dto.MemberCreate) error {
 }
 
 func (m *MemberService) Login(req *dto.MemberAuth) (*dto.TokenDetail, error) {
+
 	exists, err := m.existEmail(req.Email)
 	if err != nil {
 		return nil, err
@@ -85,7 +90,6 @@ func (m *MemberService) Login(req *dto.MemberAuth) (*dto.TokenDetail, error) {
 	if !exists {
 		return nil, &service_errors.ServiceError{EndUserMessage: service_errors.EmailNotExists}
 	}
-	fmt.Printf("member: %v", req)
 	var member models.Member
 	query := bson.M{"email": req.Email}
 	err = m.Collection.FindOne(m.ctx, query).Decode(&member)
@@ -98,8 +102,9 @@ func (m *MemberService) Login(req *dto.MemberAuth) (*dto.TokenDetail, error) {
 		return nil, err
 	}
 
-	tdto := tokenDto{Id: member.ID, FirstName: member.FirstName, LastName: member.LastName,
-		MobileNumber: member.Phone, Email: member.Email}
+	tdto := tokenDto{Id: member.ID, MobileNumber: member.Phone, Email: member.Email}
+
+	fmt.Printf("tdto: %v", tdto)
 
 	token, err := m.tokenService.GenerateToken(&tdto)
 	if err != nil {
@@ -116,7 +121,7 @@ func (m *MemberService) Update(req *dto.MemberUpdate) (*dto.MemberResponse, erro
 
 func (m *MemberService) existEmail(email string) (bool, error) {
 	query := bson.M{"email": email}
-	var member models.Member
+	var member *models.Member
 	err := m.Collection.FindOne(m.ctx, query).Decode(&member)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -124,5 +129,5 @@ func (m *MemberService) existEmail(email string) (bool, error) {
 		}
 		return false, err
 	}
-	return false, nil
+	return true, nil
 }

@@ -48,7 +48,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/members/": {
+        "/api/v1/members/": {
             "post": {
                 "description": "Registration a member",
                 "consumes": [
@@ -91,7 +91,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/members/login": {
+        "/api/v1/members/login": {
             "post": {
                 "description": "Login a member",
                 "consumes": [
@@ -134,7 +134,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/vehicles/": {
+        "/api/v1/vehicles/": {
             "post": {
                 "security": [
                     {

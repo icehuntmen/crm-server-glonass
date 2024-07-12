@@ -17,11 +17,8 @@ type TokenService struct {
 
 type tokenDto struct {
 	Id           string
-	FirstName    string
-	LastName     string
 	MobileNumber string
 	Email        string
-	Roles        []string
 }
 
 func NewTokenService(cfg *config.Config) *TokenService {
@@ -40,11 +37,9 @@ func (s *TokenService) GenerateToken(token *tokenDto) (*dto.TokenDetail, error) 
 	act := jwt.MapClaims{}
 
 	act[constants.UserIdKey] = token.Id
-	act[constants.FirstNameKey] = token.FirstName
-	act[constants.LastNameKey] = token.LastName
 	act[constants.EmailKey] = token.Email
 	act[constants.MobileNumberKey] = token.MobileNumber
-	act[constants.RolesKey] = token.Roles
+	//act[constants.RolesKey] = token.Roles
 	act[constants.ExpireTimeKey] = td.AccessTokenExpireTime
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, act)

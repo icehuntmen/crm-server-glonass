@@ -130,7 +130,7 @@ paths:
       summary: Health Check
       tags:
       - Health Check
-  /v1/members/:
+  /api/v1/members/:
     post:
       consumes:
       - application/json
@@ -158,7 +158,7 @@ paths:
       summary: Registration a member
       tags:
       - Members
-  /v1/members/login:
+  /api/v1/members/login:
     post:
       consumes:
       - application/json
@@ -186,7 +186,7 @@ paths:
       summary: Login a member
       tags:
       - Members
-  /v1/vehicles/:
+  /api/v1/vehicles/:
     post:
       consumes:
       - application/json

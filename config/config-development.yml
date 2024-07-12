@@ -50,7 +50,7 @@ otp:
   digits: 6
   limiter: 100
 jwt:
-  secret: "c25cbbc5-f5ee-4e7e-b82b-6cfb5371f881"
-  refreshSecret: "9108d09f-c434-4b47-88a9-bc86e2bc7278"
+  secret: "mySecretKey"
+  refreshSecret: "mySecretKey"
   accessTokenExpireDuration: 1440
   refreshTokenExpireDuration: 60

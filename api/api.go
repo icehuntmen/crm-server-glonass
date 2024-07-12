@@ -53,7 +53,7 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	docs.SwaggerInfo.Title = "COMECORD"
 	docs.SwaggerInfo.Description = "Система управление и мониторинга транспортных средств с системой GLONASS"
 	docs.SwaggerInfo.Version = "0.1.0"
-	docs.SwaggerInfo.BasePath = "/api"
+	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%d", cfg.Server.EPort)
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
@@ -71,11 +71,12 @@ func RegisterRouter(r *gin.Engine, conf *config.Config, db *mongo.Database) {
 	api := r.Group("/api")
 	v1 := api.Group("/v1")
 	{
-		membersRouterGroup := v1.Group("/members")
-		routers.Members(membersRouterGroup, db)
 
 		vehicles := v1.Group("/vehicles", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		routers.Vehicles(vehicles, db)
+
+		membersRouterGroup := v1.Group("/members")
+		routers.Members(membersRouterGroup, db)
 
 		health := v1.Group("/health")
 		routers.Health(health)

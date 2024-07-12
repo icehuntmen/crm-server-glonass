@@ -6,6 +6,7 @@ import (
 	"crm-glonass/api/dto"
 	"crm-glonass/api/services"
 	"crm-glonass/config"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
@@ -35,7 +36,7 @@ func NewMemberController(db *mongo.Database, ctx context.Context, conf *config.C
 // @Success 201 {object} components.BaseHttpResponse "Success"
 // @Failure 400 {object} components.BaseHttpResponse "Failed"
 // @Failure 409 {object} components.BaseHttpResponse "Failed"
-// @Router /v1/members/ [post]
+// @Router /api/v1/members/ [post]
 func (mc *MemberController) Register(ctx *gin.Context) {
 	member := new(dto.MemberCreate)
 	err := ctx.ShouldBindJSON(member)
@@ -65,7 +66,7 @@ func (mc *MemberController) Register(ctx *gin.Context) {
 // @Success 200 {object} components.BaseHttpResponse "Success"
 // @Failure 400 {object} components.BaseHttpResponse "Failed"
 // @Failure 409 {object} components.BaseHttpResponse "Failed"
-// @Router /v1/members/login [post]
+// @Router /api/v1/members/login [post]
 func (mc *MemberController) Login(ctx *gin.Context) {
 	req := new(dto.MemberAuth)
 	err := ctx.ShouldBindJSON(&req)
@@ -74,6 +75,7 @@ func (mc *MemberController) Login(ctx *gin.Context) {
 			components.GenerateBaseResponseWithValidationError(nil, false, components.ValidationError, err))
 		return
 	}
+	fmt.Println(req)
 	token, err := mc.service.Login(req)
 	if err != nil {
 		ctx.AbortWithStatusJSON(components.TranslateErrorToStatusCode(err),
