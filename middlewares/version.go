@@ -1,8 +1,10 @@
 package middlewares
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 var Version string
@@ -15,18 +17,18 @@ func GetVersion() (string, error) {
 	}
 	defer file.Close()
 
-	stat, err := file.Stat()
-	if err != nil {
-		log.Fatal("Error getting file information:", err)
-		return "", err
-	}
-
-	data := make([]byte, stat.Size())
-	_, err = file.Read(data)
+	// Read only the first line from the file
+	var version string
+	_, err = fmt.Fscanf(file, "%s\n", &version)
 	if err != nil {
 		log.Fatal("Error reading file:", err)
 		return "", err
 	}
 
-	return string(data), nil
+	// Trim any leading/trailing whitespace
+
+	version = strings.TrimSpace(version)
+	version = strings.TrimSuffix(version, "\n")
+
+	return version, nil
 }

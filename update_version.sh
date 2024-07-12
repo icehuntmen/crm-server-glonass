@@ -15,8 +15,8 @@ PATCH=$((PATCH + 1))
 # Create new version string
 NEW_VERSION="$MAJOR.$MINOR.$PATCH"
 
-# Update VERSION file
-echo "$NEW_VERSION" > VERSION
+# Update VERSION file without leading/trailing spaces
+echo "${NEW_VERSION}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' > VERSION
 
 # Add updated VERSION file to git index
 git add VERSION
