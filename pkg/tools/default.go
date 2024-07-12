@@ -2,8 +2,13 @@ package tools
 
 import (
 	"encoding/json"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
+
+func GenerateUUID() string {
+	return uuid.New().String()
+}
 
 func TypeConverter[T any](data any) (*T, error) {
 	var result T
