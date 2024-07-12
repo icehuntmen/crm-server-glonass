@@ -5,6 +5,7 @@ import (
 	"github.com/go-yaml/yaml"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -74,6 +75,7 @@ type Config struct {
 		AccessTokenExpireDuration  time.Duration `yaml:"accessTokenExpireDuration"`
 		RefreshTokenExpireDuration time.Duration `yaml:"refreshTokenExpireDuration"`
 	}
+	Version string
 }
 
 func GetConfig() *Config {
@@ -88,6 +90,11 @@ func GetConfig() *Config {
 		log.Fatalf("Error in parse config %v", err)
 	}
 
+	version, err := getVersion()
+	if err != nil {
+		log.Fatalf("Error in get version %v", err)
+	}
+	cfg.Version = version
 	return cfg
 }
 
@@ -106,6 +113,32 @@ func LoadConfig(filename string, fileType string) ([]byte, error) {
 		return nil, err
 	}
 	return yamlFile, nil
+}
+
+var Version string
+
+func getVersion() (string, error) {
+	file, err := os.Open("./VERSION")
+	if err != nil {
+		log.Fatal("Error opening file:", err)
+		return "", err
+	}
+	defer file.Close()
+
+	// Read only the first line from the file
+	var version string
+	_, err = fmt.Fscanf(file, "%s\n", &version)
+	if err != nil {
+		log.Fatal("Error reading file:", err)
+		return "", err
+	}
+
+	// Trim any leading/trailing whitespace
+
+	version = strings.TrimSpace(version)
+	version = strings.TrimSuffix(version, "\n")
+
+	return version, nil
 }
 
 func getConfigPath(env string) string {

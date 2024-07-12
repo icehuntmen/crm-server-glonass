@@ -6,20 +6,17 @@ import (
 	"crm-glonass/config"
 	"crm-glonass/data/cache"
 	mongox "crm-glonass/data/mongox"
-	"crm-glonass/middlewares"
+
 	"crm-glonass/pkg/logging"
 )
 
 var logger = logging.NewLogger(config.GetConfig())
-var version, _ = middlewares.GetVersion()
 
 func main() {
-
+	conf := config.GetConfig()
 	ctx := context.TODO()
 
-	logger.Info(logging.General, logging.StartUp, "Started server...", map[logging.ExtraKey]interface{}{"Version": version})
-
-	conf := config.GetConfig()
+	logger.Info(logging.General, logging.StartUp, "Started server...", map[logging.ExtraKey]interface{}{"Version": conf.Version})
 
 	database, _ := mongox.Connection(conf, ctx, logger)
 	cache.InitRedis(conf, ctx)
