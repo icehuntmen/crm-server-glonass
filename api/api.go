@@ -2,6 +2,7 @@ package api
 
 import (
 	routers "crm-glonass/api/routes"
+	"crm-glonass/api/validations"
 	"crm-glonass/config"
 	"crm-glonass/docs"
 	_ "crm-glonass/docs"
@@ -9,14 +10,20 @@ import (
 	"crm-glonass/pkg/logging"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+var logger = logging.NewLogger(config.GetConfig())
+
 func InitialServer(cfg *config.Config, database *mongo.Database, logger logging.Logger) {
 	gin.SetMode(cfg.Server.RunMode)
 	r := gin.New()
+
+	RegisterValidator()
 
 	r.Use(middlewares.DefaultStructuredLogger(cfg))
 	r.Use(middlewares.Cors(cfg))
@@ -29,6 +36,16 @@ func InitialServer(cfg *config.Config, database *mongo.Database, logger logging.
 	err := r.Run(fmt.Sprintf(":%d", cfg.Server.IPort))
 	if err != nil {
 		logger.Fatal(logging.API, logging.StartUp, err.Error(), nil)
+	}
+}
+func RegisterValidator() {
+	val, ok := binding.Validator.Engine().(*validator.Validate)
+	if ok {
+
+		err := val.RegisterValidation("password", validations.PasswordValidator, true)
+		if err != nil {
+			logger.Error(logging.Validation, logging.StartUp, err.Error(), nil)
+		}
 	}
 }
 
@@ -54,6 +71,8 @@ func RegisterRouter(r *gin.Engine, conf *config.Config, db *mongo.Database) {
 	api := r.Group("/api")
 	v1 := api.Group("/v1")
 	{
+		membersRouterGroup := v1.Group("/members")
+		routers.Members(membersRouterGroup, db)
 
 		vehicles := v1.Group("/vehicles", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		routers.Vehicles(vehicles, db)
