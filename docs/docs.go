@@ -134,6 +134,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/roles/create": {
+            "post": {
+                "description": "Создание роли",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Создание роли",
+                "parameters": [
+                    {
+                        "description": "role",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Role"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/vehicles/": {
             "post": {
                 "security": [
@@ -315,6 +358,21 @@ const docTemplate = `{
                 "phone": {
                     "type": "string",
                     "example": "+7 (999) 999-99-99"
+                }
+            }
+        },
+        "dto.Role": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Admin"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

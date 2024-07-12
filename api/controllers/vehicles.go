@@ -26,16 +26,17 @@ func NewVehiclesController(db *mongo.Database, ctx context.Context, conf *config
 }
 
 // Create Vehicle godoc
-// @Summary Create a vehicle
-// @Description Create a vehicle
-// @Tags Vehicles
-// @Accept json
-// @produces json
-// @Param Request body dto.CreateVehicleRequest true "Create a vehicle model"
-// @Success 201 {object} components.BaseHttpResponse{result=dto.DBVehicleDTO} "Created response"
-// @Failure 400 {object} components.BaseHttpResponse "Bad request"
-// @Router /api/v1/vehicles/ [post]
-// @Security AuthBearer
+//
+//	@Summary		Create a vehicle
+//	@Description	Create a vehicle
+//	@Tags			Vehicles
+//	@Accept			json
+//	@produces		json
+//	@Param			Request	body		dto.CreateVehicleRequest								true	"Create a vehicle model"
+//	@Success		201		{object}	components.BaseHttpResponse{result=dto.DBVehicleDTO}	"Created response"
+//	@Failure		400		{object}	components.BaseHttpResponse								"Bad request"
+//	@Router			/api/v1/vehicles/ [post]
+//	@Security		AuthBearer
 func (vc *VehiclesController) Create(ctx *gin.Context) {
 	var vehicle *dto.CreateVehicleRequest
 
@@ -55,18 +56,18 @@ func (vc *VehiclesController) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{"status": "success", "data": newPost})
 }
 
-func (pc *VehiclesController) Update(ctx *gin.Context) {
+func (vc *VehiclesController) Update(ctx *gin.Context) {
 
 }
 
-func (pc *VehiclesController) Delete(ctx *gin.Context) {
+func (vc *VehiclesController) Delete(ctx *gin.Context) {
 
 }
 
-func (pc *VehiclesController) GetById(ctx *gin.Context) {
+func (vc *VehiclesController) GetById(ctx *gin.Context) {
 
 }
 
-func (pc *VehiclesController) GetByFilter(ctx *gin.Context) {
+func (vc *VehiclesController) GetByFilter(ctx *gin.Context) {
 
 }

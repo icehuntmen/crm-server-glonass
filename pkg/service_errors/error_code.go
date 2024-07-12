@@ -21,4 +21,7 @@ const (
 
 	// DB
 	RecordNotFound = "record not found"
+
+	// Role
+	RoleExists = "Role with such name already exists"
 )

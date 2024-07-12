@@ -27,16 +27,16 @@ func NewMemberController(db *mongo.Database, ctx context.Context, conf *config.C
 }
 
 // Register Member godoc
-// @Summary Registration a member
-// @Description Registration a member
-// @Tags Members
-// @Accept json
-// @produces json
-// @Param Request body dto.MemberCreate true "member"
-// @Success 201 {object} components.BaseHttpResponse "Success"
-// @Failure 400 {object} components.BaseHttpResponse "Failed"
-// @Failure 409 {object} components.BaseHttpResponse "Failed"
-// @Router /api/v1/members/ [post]
+//	@Summary		Registration a member
+//	@Description	Registration a member
+//	@Tags			Members
+//	@Accept			json
+//	@produces		json
+//	@Param			Request	body		dto.MemberCreate			true	"member"
+//	@Success		201		{object}	components.BaseHttpResponse	"Success"
+//	@Failure		400		{object}	components.BaseHttpResponse	"Failed"
+//	@Failure		409		{object}	components.BaseHttpResponse	"Failed"
+//	@Router			/api/v1/members/ [post]
 func (mc *MemberController) Register(ctx *gin.Context) {
 	member := new(dto.MemberCreate)
 	err := ctx.ShouldBindJSON(member)
@@ -57,16 +57,16 @@ func (mc *MemberController) Register(ctx *gin.Context) {
 }
 
 // Login Member godoc
-// @Summary Login a member
-// @Description Login a member
-// @Tags Members
-// @Accept json
-// @produces json
-// @Param Request body dto.MemberAuth true "member"
-// @Success 200 {object} components.BaseHttpResponse "Success"
-// @Failure 400 {object} components.BaseHttpResponse "Failed"
-// @Failure 409 {object} components.BaseHttpResponse "Failed"
-// @Router /api/v1/members/login [post]
+//	@Summary		Login a member
+//	@Description	Login a member
+//	@Tags			Members
+//	@Accept			json
+//	@produces		json
+//	@Param			Request	body		dto.MemberAuth				true	"member"
+//	@Success		200		{object}	components.BaseHttpResponse	"Success"
+//	@Failure		400		{object}	components.BaseHttpResponse	"Failed"
+//	@Failure		409		{object}	components.BaseHttpResponse	"Failed"
+//	@Router			/api/v1/members/login [post]
 func (mc *MemberController) Login(ctx *gin.Context) {
 	req := new(dto.MemberAuth)
 	err := ctx.ShouldBindJSON(&req)

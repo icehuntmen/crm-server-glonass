@@ -91,6 +91,16 @@ definitions:
     required:
     - password
     type: object
+  dto.Role:
+    properties:
+      name:
+        example: Admin
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+    type: object
   validations.ValidationError:
     properties:
       message:
@@ -186,6 +196,34 @@ paths:
       summary: Login a member
       tags:
       - Members
+  /api/v1/roles/create:
+    post:
+      consumes:
+      - application/json
+      description: Создание роли
+      parameters:
+      - description: role
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Role'
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Создание роли
+      tags:
+      - Roles
   /api/v1/vehicles/:
     post:
       consumes:
