@@ -1,6 +1,7 @@
 package validations
 
 import (
+	"crm-glonass/pkg/tools"
 	"errors"
 	"github.com/go-playground/validator/v10"
 )
@@ -26,4 +27,14 @@ func GetValidationErrors(err error) *[]ValidationError {
 		return &validationErrors
 	}
 	return nil
+}
+
+func PasswordValidator(fld validator.FieldLevel) bool {
+	value, ok := fld.Field().Interface().(string)
+	if !ok {
+		fld.Param()
+		return false
+	}
+
+	return tools.CheckPassword(value)
 }
