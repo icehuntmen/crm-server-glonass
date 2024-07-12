@@ -2,10 +2,10 @@ package middlewares
 
 import (
 	"crm-glonass/api/components"
+	"crm-glonass/api/services"
 	"crm-glonass/config"
 	"crm-glonass/constants"
 	"crm-glonass/pkg/service_errors"
-	"crm-glonass/services"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
