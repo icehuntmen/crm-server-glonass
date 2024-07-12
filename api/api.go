@@ -60,13 +60,13 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
 
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @securityDefinitions.basic  BasicAuth
+//	@securityDefinitions.basic	BasicAuth
 
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
+// @externalDocs.description	OpenAPI
+// @externalDocs.url			https://swagger.io/resources/open-api/
 func RegisterRouter(r *gin.Engine, conf *config.Config, db *mongo.Database) {
 	api := r.Group("/api")
 	v1 := api.Group("/v1")
@@ -80,6 +80,9 @@ func RegisterRouter(r *gin.Engine, conf *config.Config, db *mongo.Database) {
 
 		health := v1.Group("/health")
 		routers.Health(health)
+
+		roles := v1.Group("/roles")
+		routers.Roles(roles, db)
 	}
 
 	r.Static("/static", "./uploads")

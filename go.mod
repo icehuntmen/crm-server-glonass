@@ -1,6 +1,6 @@
 module crm-glonass
 
-go 1.22
+go 1.22.5
 
 require (
 	github.com/didip/tollbooth v4.0.2+incompatible

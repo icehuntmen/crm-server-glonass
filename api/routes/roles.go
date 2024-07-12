@@ -8,11 +8,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func Members(r *gin.RouterGroup, db *mongo.Database) {
+func Roles(r *gin.RouterGroup, db *mongo.Database) {
 	cfg := config.GetConfig()
 	ctx := context.Background()
-	h := controllers.NewMemberController(db, ctx, cfg)
+	h := controllers.NewRoleController(db, ctx, cfg)
 
-	r.POST("/", h.Register)
-	r.POST("/login", h.Login)
+	r.POST("/create", h.CreateRole)
+	r.GET("/list", h.ListRoles)
 }
