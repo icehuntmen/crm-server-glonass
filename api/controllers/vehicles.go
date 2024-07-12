@@ -3,8 +3,8 @@ package controllers
 import (
 	"context"
 	"crm-glonass/api/dto"
+	"crm-glonass/api/services"
 	"crm-glonass/config"
-	"crm-glonass/services"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
