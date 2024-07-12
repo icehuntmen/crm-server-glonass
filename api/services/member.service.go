@@ -4,10 +4,12 @@ import (
 	"context"
 	"crm-glonass/api/dto"
 	"crm-glonass/config"
+	"crm-glonass/data/models"
 	"crm-glonass/pkg/logging"
 	"crm-glonass/pkg/service_errors"
 	"crm-glonass/pkg/tools"
 	"errors"
+	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -16,10 +18,11 @@ import (
 )
 
 type MemberService struct {
-	Mongo      *mongo.Database
-	Collection *mongo.Collection
-	ctx        context.Context
-	logger     logging.Logger
+	Mongo        *mongo.Database
+	Collection   *mongo.Collection
+	ctx          context.Context
+	logger       logging.Logger
+	tokenService *TokenService
 }
 
 func NewMemberService(db *mongo.Database, cfg *config.Config, ctx context.Context, collectionName string) MemberInterface {
@@ -75,11 +78,51 @@ func (m *MemberService) Register(memberCreate *dto.MemberCreate) error {
 }
 
 func (m *MemberService) Login(req *dto.MemberAuth) (*dto.TokenDetail, error) {
-	return nil, nil
+	exists, err := m.existEmail(req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, &service_errors.ServiceError{EndUserMessage: service_errors.EmailNotExists}
+	}
+	fmt.Printf("member: %v", req)
+	var member models.Member
+	query := bson.M{"email": req.Email}
+	err = m.Collection.FindOne(m.ctx, query).Decode(&member)
+
+	if err != nil {
+		return nil, err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(req.Password))
+	if err != nil {
+		return nil, err
+	}
+
+	tdto := tokenDto{Id: member.ID, FirstName: member.FirstName, LastName: member.LastName,
+		MobileNumber: member.Phone, Email: member.Email}
+
+	token, err := m.tokenService.GenerateToken(&tdto)
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
 
 }
 
 func (m *MemberService) Update(req *dto.MemberUpdate) (*dto.MemberResponse, error) {
 	return nil, nil
 
+}
+
+func (m *MemberService) existEmail(email string) (bool, error) {
+	query := bson.M{"email": email}
+	var member models.Member
+	err := m.Collection.FindOne(m.ctx, query).Decode(&member)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return false, nil
+		}
+		return false, err
+	}
+	return false, nil
 }

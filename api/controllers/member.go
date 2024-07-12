@@ -54,3 +54,32 @@ func (mc *MemberController) Register(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, components.GenerateBaseResponse(nil, true, components.Success))
 
 }
+
+// Login Member godoc
+// @Summary Login a member
+// @Description Login a member
+// @Tags Members
+// @Accept json
+// @produces json
+// @Param Request body dto.MemberAuth true "member"
+// @Success 200 {object} components.BaseHttpResponse "Success"
+// @Failure 400 {object} components.BaseHttpResponse "Failed"
+// @Failure 409 {object} components.BaseHttpResponse "Failed"
+// @Router /v1/members/login [post]
+func (mc *MemberController) Login(ctx *gin.Context) {
+	req := new(dto.MemberAuth)
+	err := ctx.ShouldBindJSON(&req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest,
+			components.GenerateBaseResponseWithValidationError(nil, false, components.ValidationError, err))
+		return
+	}
+	token, err := mc.service.Login(req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(components.TranslateErrorToStatusCode(err),
+			components.GenerateBaseResponseWithError(nil, false, components.InternalError, err))
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, components.GenerateBaseResponse(token, true, components.Success))
+}

@@ -14,4 +14,5 @@ func Members(r *gin.RouterGroup, db *mongo.Database) {
 	h := controllers.NewMemberController(db, ctx, cfg)
 	//
 	r.POST("/", h.Register)
+	r.POST("/login", h.Login)
 }

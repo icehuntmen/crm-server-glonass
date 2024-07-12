@@ -12,7 +12,8 @@ type MemberLocation struct {
 }
 
 type MemberRole struct {
-	Name        string   `json:"role,omitempty" bson:"role,omitempty"`
+	ID          string   `json:"id,omitempty" bson:"_id,omitempty"`
+	Name        string   `json:"name,omitempty" bson:"name,omitempty"`
 	Permissions []string `json:"permissions,omitempty" bson:"permissions,omitempty"`
 }
 

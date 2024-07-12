@@ -66,6 +66,15 @@ definitions:
       year:
         type: integer
     type: object
+  dto.MemberAuth:
+    properties:
+      email:
+        example: user@comecord.com
+        type: string
+      password:
+        example: calista78Batista
+        type: string
+    type: object
   dto.MemberCreate:
     properties:
       email:
@@ -73,7 +82,7 @@ definitions:
         minLength: 6
         type: string
       password:
-        example: calista
+        example: calista78Batista
         minLength: 6
         type: string
       phone:
@@ -147,6 +156,34 @@ paths:
           schema:
             $ref: '#/definitions/components.BaseHttpResponse'
       summary: Registration a member
+      tags:
+      - Members
+  /v1/members/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a member
+      parameters:
+      - description: member
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MemberAuth'
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Login a member
       tags:
       - Members
   /v1/vehicles/:

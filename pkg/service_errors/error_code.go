@@ -14,6 +14,7 @@ const (
 
 	// User
 	EmailExists       = "Email exists"
+	EmailNotExists    = "Member not exists"
 	UsernameExists    = "Username exists"
 	UsernameNotExists = "Username not exists"
 	PermissionDenied  = "Permission denied"

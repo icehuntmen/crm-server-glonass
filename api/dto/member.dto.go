@@ -25,7 +25,7 @@ type MemberCreate struct {
 	MiddleName string                `json:"-"`
 	Birthday   time.Time             `json:"-"`
 	Email      string                `json:"email,omitempty"  binding:"min=6,email" example:"user@comecord.com"`
-	Password   string                `json:"password,omitempty" binding:"required,password,min=6" example:"calista"`
+	Password   string                `json:"password,omitempty" binding:"required,password,min=6" example:"calista78Batista"`
 	Phone      string                `json:"phone,omitempty"  example:"+7 (999) 999-99-99"`
 	Location   models.MemberLocation `json:"-" default:"{}"`
 	Role       []models.MemberRole   `json:"-" default:"[]"`
@@ -51,6 +51,6 @@ type MemberUpdate struct {
 }
 
 type MemberAuth struct {
-	Email    string `json:"email,omitempty" bson:"email,omitempty"`
-	Password string `json:"password,omitempty" bson:"password,omitempty"`
+	Email    string `json:"email,omitempty"  example:"user@comecord.com" bson:"email,omitempty"`
+	Password string `json:"password,omitempty" example:"calista78Batista" bson:"password,omitempty"`
 }

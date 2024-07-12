@@ -91,6 +91,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/members/login": {
+            "post": {
+                "description": "Login a member",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Login a member",
+                "parameters": [
+                    {
+                        "description": "member",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.MemberAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/vehicles/": {
             "post": {
                 "security": [
@@ -240,6 +283,19 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.MemberAuth": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "user@comecord.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "calista78Batista"
+                }
+            }
+        },
         "dto.MemberCreate": {
             "type": "object",
             "required": [
@@ -254,7 +310,7 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "minLength": 6,
-                    "example": "calista"
+                    "example": "calista78Batista"
                 },
                 "phone": {
                     "type": "string",

@@ -16,10 +16,9 @@ type TokenService struct {
 }
 
 type tokenDto struct {
-	UserId       int
+	Id           string
 	FirstName    string
 	LastName     string
-	UserName     string
 	MobileNumber string
 	Email        string
 	Roles        []string
@@ -40,10 +39,9 @@ func (s *TokenService) GenerateToken(token *tokenDto) (*dto.TokenDetail, error) 
 
 	act := jwt.MapClaims{}
 
-	act[constants.UserIdKey] = token.UserId
+	act[constants.UserIdKey] = token.Id
 	act[constants.FirstNameKey] = token.FirstName
 	act[constants.LastNameKey] = token.LastName
-	act[constants.UserNameKey] = token.UserName
 	act[constants.EmailKey] = token.Email
 	act[constants.MobileNumberKey] = token.MobileNumber
 	act[constants.RolesKey] = token.Roles
@@ -60,7 +58,7 @@ func (s *TokenService) GenerateToken(token *tokenDto) (*dto.TokenDetail, error) 
 
 	rtc := jwt.MapClaims{}
 
-	rtc[constants.UserIdKey] = token.UserId
+	rtc[constants.UserIdKey] = token.Id
 	rtc[constants.ExpireTimeKey] = td.RefreshTokenExpireTime
 
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtc)
