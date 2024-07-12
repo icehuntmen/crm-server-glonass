@@ -14,4 +14,5 @@ func Roles(r *gin.RouterGroup, db *mongo.Database) {
 	h := controllers.NewRoleController(db, ctx, cfg)
 
 	r.POST("/create", h.CreateRole)
+	r.GET("/list", h.ListRoles)
 }

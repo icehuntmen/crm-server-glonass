@@ -8,6 +8,7 @@ import (
 	"crm-glonass/pkg/service_errors"
 	"crm-glonass/pkg/tools"
 	"errors"
+	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -52,4 +53,17 @@ func (r *RoleService) CreateRole(role *dto.Role) error {
 	}
 
 	return err
+}
+
+func (r *RoleService) ListRoles() ([]dto.RoleList, error) {
+	cursor, err := r.Collection.Find(context.TODO(), bson.D{})
+	if err != nil {
+		r.logger.Error(logging.MongoDB, logging.Find, err.Error(), nil)
+	}
+	var roles []dto.RoleList
+	if err = cursor.All(context.TODO(), &roles); err != nil {
+		r.logger.Error(logging.MongoDB, logging.Find, err.Error(), nil)
+	}
+	fmt.Println(roles)
+	return roles, nil
 }

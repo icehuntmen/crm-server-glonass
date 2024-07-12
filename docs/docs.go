@@ -177,6 +177,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/roles/list": {
+            "get": {
+                "description": "Вывод всех ролей",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Вывод всех ролей",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.RoleList"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/vehicles/": {
             "post": {
                 "security": [
@@ -367,6 +402,23 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Admin"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "dto.RoleList": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "permissions": {
                     "type": "array",
