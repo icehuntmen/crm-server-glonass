@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"strings"
 )
 
 type RoleService struct {
@@ -32,6 +33,7 @@ func NewRoleService(db *mongo.Database, cfg *config.Config, ctx context.Context,
 
 func (r *RoleService) CreateRole(role *dto.Role) error {
 	role.ID = tools.GenerateUUID()
+	role.Name = strings.ToLower(role.Name)
 	opt := options.Index()
 	opt.SetUnique(true)
 
