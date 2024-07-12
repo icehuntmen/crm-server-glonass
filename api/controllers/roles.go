@@ -67,5 +67,5 @@ func (r *RolesController) ListRoles(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest,
 			components.GenerateBaseResponseWithValidationError(nil, false, components.NotFoundError, err))
 	}
-	ctx.JSON(http.StatusOK, roles)
+	ctx.JSON(http.StatusOK, components.GenerateBaseResponse(roles, true, components.Success))
 }
