@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
 	"os"
 	"strconv"
 	"strings"
-
-	"github.com/spf13/cobra"
 )
 
 var VersionCmd = &cobra.Command{
@@ -55,6 +54,7 @@ var bumpCmd = &cobra.Command{
 		fmt.Printf("Updated version to: %s\n", newVersion)
 	},
 }
+
 var checkCmd = &cobra.Command{
 	Use:   "check",
 	Short: "Check the version file",
@@ -69,8 +69,6 @@ var checkCmd = &cobra.Command{
 	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func main() {
 	var rootCmd = &cobra.Command{Use: "app"}
 	rootCmd.AddCommand(VersionCmd)

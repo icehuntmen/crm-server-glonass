@@ -3,6 +3,7 @@ repos:
     hooks:
       - id: check-version-file
         name: check-version-file
-        entry: go run cmd/version.go check
+        entry: go run cmd/version.go patch
         language: golang
         pass_filenames: false
+        always_run: true
