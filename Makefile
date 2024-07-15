@@ -25,7 +25,7 @@ $(BINARY): $(SRC_DIRS)
 	## $(GO) build -o $(BINARY) ./src/cmd/main.go
 
 sw:
-	swag init -g cmd/main.go --parseDependency --parseInternal
+	swag init -g cmd/main.go
 
 run:
 	air -c .airm.toml
