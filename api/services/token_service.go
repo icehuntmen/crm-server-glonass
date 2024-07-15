@@ -21,7 +21,7 @@ type tokenDto struct {
 	Email        string
 }
 
-func NewTokenService(cfg *config.Config) *TokenService {
+func NewTokenService(cfg *config.Config) TokenInterface {
 	logger := logging.NewLogger(cfg)
 	return &TokenService{
 		logger: logger,
