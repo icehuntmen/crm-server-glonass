@@ -28,7 +28,7 @@ sw:
 	swag init -g cmd/main.go --parseDependency --parseInternal
 
 run:
-	air -c .airm.toml
+	air -c .airm.toml --debug --env dev
 
 # Run tests
 test:
