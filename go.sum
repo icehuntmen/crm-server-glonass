@@ -70,6 +70,14 @@ github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeN
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/icehuntmen/go-version-commit v1.0.2 h1:d3b9xKHPNOW892wuitq/UAS/Zlo5dnvhpGXsLqt7+u0=
+github.com/icehuntmen/go-version-commit v1.0.2/go.mod h1:nzt3DSiWryL4sEVrYUTPtc5bExa1q9ZYX/5jng8Pz1M=
+github.com/icehuntmen/go-version-commit v1.0.9 h1:eGPuc/VehuB4wtVu+LkaTHunw4or0ldF1pK1fj32brQ=
+github.com/icehuntmen/go-version-commit v1.0.9/go.mod h1:nzt3DSiWryL4sEVrYUTPtc5bExa1q9ZYX/5jng8Pz1M=
+github.com/icehuntmen/husky v1.0.1 h1:5H3Qef3rqSCqgz1YBeLyqzQulfDJbaW2+eSiF772BMY=
+github.com/icehuntmen/husky v1.0.1/go.mod h1:++pulYaoqebnF6eQu8F1KRsWTfGJZvJxfHaLuaeZ/tU=
+github.com/icehuntmen/husky v1.0.2 h1:RkGWy5kBWwizGlhjP8czogJ3mTk8FlA/RSnwbtfeZ/g=
+github.com/icehuntmen/husky v1.0.2/go.mod h1:++pulYaoqebnF6eQu8F1KRsWTfGJZvJxfHaLuaeZ/tU=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/josharian/intern v1.0.0 h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8HmY=
