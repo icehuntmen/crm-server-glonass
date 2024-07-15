@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 )
@@ -52,6 +53,15 @@ var bumpCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		fmt.Printf("Updated version to: %s\n", newVersion)
+
+		// Добавляем файл VERSION в git
+		gitAddCmd := exec.Command("git", "add", "VERSION")
+		err = gitAddCmd.Run()
+		if err != nil {
+			fmt.Println("Error adding VERSION file to git:", err)
+			os.Exit(1)
+		}
+
 	},
 }
 
@@ -71,7 +81,7 @@ var checkCmd = &cobra.Command{
 
 func main() {
 	var rootCmd = &cobra.Command{Use: "app"}
-	rootCmd.AddCommand(VersionCmd)
+	//rootCmd.AddCommand(VersionCmd)
 	rootCmd.AddCommand(bumpCmd)
 	rootCmd.AddCommand(checkCmd)
 
