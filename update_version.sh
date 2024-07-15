@@ -21,5 +21,8 @@ echo "${NEW_VERSION}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' > VERS
 # Add updated VERSION file to git index
 git add VERSION
 
+# Commit updated VERSION file
+git commit -m "Update version to $NEW_VERSION"
+
 # Print updated version for confirmation
 echo "Version updated to $NEW_VERSION"
