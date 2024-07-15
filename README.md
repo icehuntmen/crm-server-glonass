@@ -1,6 +1,6 @@
 
 # Comecord CRM
-version: 0.1.x
+Version: 0.1.x
 
 REST API service for managing clients, vehicles, monitoring and transport accounting. 
 
