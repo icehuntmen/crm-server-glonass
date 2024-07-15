@@ -19,6 +19,7 @@ func main() {
 	// Logger info
 	logger.Info(logging.General, logging.StartUp, "Started server...", map[logging.ExtraKey]interface{}{"Version": conf.Version})
 
+	// Database connection
 	database, _ := mongox.Connection(conf, ctx, logger)
 	cache.InitRedis(conf, ctx)
 	logger.Infof("Listening on Swagger http://localhost:%d/swagger/index.html", conf.Server.IPort)
