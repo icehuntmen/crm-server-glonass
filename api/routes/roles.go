@@ -13,6 +13,6 @@ func Roles(r *gin.RouterGroup, db *mongo.Database) {
 	ctx := context.Background()
 	h := controllers.NewRoleController(db, ctx, cfg)
 
-	r.POST("/create", h.CreateRole)
-	r.GET("/list", h.ListRoles)
+	r.POST("/create", h.Create)
+	r.GET("/list", h.List)
 }

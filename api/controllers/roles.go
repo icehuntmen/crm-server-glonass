@@ -37,7 +37,7 @@ func NewRoleController(db *mongo.Database, ctx context.Context, conf *config.Con
 //	@Failure		400		{object}	components.BaseHttpResponse	"Failed"
 //	@Failure		409		{object}	components.BaseHttpResponse	"Failed"
 //	@Router			/api/v1/roles/create [post]
-func (r *RolesController) CreateRole(ctx *gin.Context) {
+func (r *RolesController) Create(ctx *gin.Context) {
 	req := new(dto.Role)
 	err := ctx.ShouldBindJSON(&req)
 	if err != nil {
@@ -45,7 +45,7 @@ func (r *RolesController) CreateRole(ctx *gin.Context) {
 			components.GenerateBaseResponseWithValidationError(nil, false, components.ValidationError, err))
 		return
 	}
-	role := r.service.CreateRole(req)
+	role := r.service.Create(req)
 
 	ctx.JSON(http.StatusCreated, components.GenerateBaseResponse(role, true, components.Success))
 }
@@ -61,8 +61,8 @@ func (r *RolesController) CreateRole(ctx *gin.Context) {
 //	@Failure		400	{object}	components.BaseHttpResponse	"Failed"
 //	@Failure		409	{object}	components.BaseHttpResponse	"Failed"
 //	@Router			/api/v1/roles/list [get]
-func (r *RolesController) ListRoles(ctx *gin.Context) {
-	roles, err := r.service.ListRoles()
+func (r *RolesController) List(ctx *gin.Context) {
+	roles, err := r.service.List()
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest,
 			components.GenerateBaseResponseWithValidationError(nil, false, components.NotFoundError, err))
