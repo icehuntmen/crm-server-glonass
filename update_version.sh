@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -e
 
 # Read current version from VERSION file
 CURRENT_VERSION=$(cat VERSION)
@@ -19,10 +20,12 @@ NEW_VERSION="$MAJOR.$MINOR.$PATCH"
 echo "${NEW_VERSION}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' > VERSION
 
 # Add updated VERSION file to git index
-git add VERSION
+#git add VERSION
 
 # Commit updated VERSION file
-git commit -m "Update version to $NEW_VERSION"
+#git commit -m "Update version to $NEW_VERSION"
 
 # Print updated version for confirmation
 echo "Version updated to $NEW_VERSION"
+
+exit 1

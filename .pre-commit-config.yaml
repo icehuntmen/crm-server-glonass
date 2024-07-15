@@ -1,8 +1,8 @@
 repos:
   - repo: local
     hooks:
-      - id: update-version
-        name: Update Version File
-        entry: bash -c './update_version.sh'
-        language: system
-        files: VERSION
+      - id: check-version-file
+        name: check-version-file
+        entry: go run cmd/version.go check
+        language: golang
+        pass_filenames: false
