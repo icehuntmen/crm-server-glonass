@@ -5,6 +5,6 @@ import (
 )
 
 type RoleInterface interface {
-	CreateRole(role *dto.Role) error
-	ListRoles() ([]dto.RoleList, error)
+	Create(role *dto.Role) error
+	List() ([]dto.RoleList, error)
 }

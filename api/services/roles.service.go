@@ -31,7 +31,7 @@ func NewRoleService(db *mongo.Database, cfg *config.Config, ctx context.Context,
 	}
 }
 
-func (r *RoleService) CreateRole(role *dto.Role) error {
+func (r *RoleService) Create(role *dto.Role) error {
 	role.ID = tools.GenerateUUID()
 	role.Name = strings.ToLower(role.Name)
 	opt := options.Index()
@@ -57,7 +57,7 @@ func (r *RoleService) CreateRole(role *dto.Role) error {
 	return err
 }
 
-func (r *RoleService) ListRoles() ([]dto.RoleList, error) {
+func (r *RoleService) List() ([]dto.RoleList, error) {
 	cursor, err := r.Collection.Find(context.TODO(), bson.D{})
 	if err != nil {
 		r.logger.Error(logging.MongoDB, logging.Find, err.Error(), nil)
