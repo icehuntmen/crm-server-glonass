@@ -1,9 +1,10 @@
 repos:
-  - repo: local
+  - repo: https://github.com/icehuntmen/go-version-commit
+    rev: v1.0.9
     hooks:
-      - id: check-version-file
-        name: check-version-file
-        entry: go run cmd/version.go patch
+      - id: increment-patch-version
+        name: Increment Patch Version
+        entry: go run github.com/icehuntmen/go-version-commit@v1.0.9 patch
         language: golang
         pass_filenames: false
         always_run: true
