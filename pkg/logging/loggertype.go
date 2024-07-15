@@ -14,6 +14,7 @@ const (
 	Email           Category = "Email"
 	IO              Category = "SocketIO"
 	Prometheus      Category = "Prometheus"
+	Validation      Category = "Validation"
 )
 
 const (
@@ -25,9 +26,11 @@ const (
 	Insert          SubCategory = "Insert"
 	Update          SubCategory = "Update"
 	Delete          SubCategory = "Delete"
+	CreateIndex     SubCategory = "CreateIndex"
 	ExternalService SubCategory = "ExternalService"
 	Api             SubCategory = "Api"
 	StartUp         SubCategory = "StartUp"
+	HashPassword    SubCategory = "HashPassword"
 )
 
 const (
@@ -40,6 +43,7 @@ const (
 	BodySize     ExtraKey = "BodySize"
 	Path         ExtraKey = "Path"
 	Latency      ExtraKey = "Latency"
+	Version      ExtraKey = "Version"
 	RequestBody  ExtraKey = "RequestBody"
 	ResponseBody ExtraKey = "ResponseBody"
 	ErrorMessage ExtraKey = "ErrorMessage"

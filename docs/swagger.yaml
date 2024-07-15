@@ -34,6 +34,84 @@ definitions:
     - OtpLimiterError
     - CustomRecovery
     - InternalError
+  dto.CreateVehicleRequest:
+    properties:
+      location:
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      year:
+        type: integer
+    type: object
+  dto.DBVehicleDTO:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      updated_at:
+        type: string
+      year:
+        type: integer
+    type: object
+  dto.MemberAuth:
+    properties:
+      email:
+        example: user@comecord.com
+        type: string
+      password:
+        example: calista78Batista
+        type: string
+    type: object
+  dto.MemberRegistration:
+    properties:
+      email:
+        example: user@comecord.com
+        minLength: 6
+        type: string
+      password:
+        example: calista78Batista
+        minLength: 6
+        type: string
+      phone:
+        example: +7 (999) 999-99-99
+        type: string
+    required:
+    - password
+    type: object
+  dto.Role:
+    properties:
+      name:
+        example: Admin
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+    type: object
+  dto.RoleList:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+    type: object
   validations.ValidationError:
     properties:
       message:
@@ -73,7 +151,147 @@ paths:
       summary: Health Check
       tags:
       - Health Check
+  /api/v1/members/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a member
+      parameters:
+      - description: member
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MemberAuth'
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Login a member
+      tags:
+      - Members
+  /api/v1/members/register:
+    post:
+      consumes:
+      - application/json
+      description: Registration a member
+      parameters:
+      - description: member
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MemberRegistration'
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Registration a member
+      tags:
+      - Members
+  /api/v1/roles/create:
+    post:
+      consumes:
+      - application/json
+      description: Создание роли
+      parameters:
+      - description: role
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Role'
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Создание роли
+      tags:
+      - Roles
+  /api/v1/roles/list:
+    get:
+      consumes:
+      - application/json
+      description: Вывод всех ролей
+      responses:
+        "200":
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/dto.RoleList'
+            type: array
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Вывод всех ролей
+      tags:
+      - Roles
+  /api/v1/vehicles/:
+    post:
+      consumes:
+      - application/json
+      description: Create a vehicle
+      parameters:
+      - description: Create a vehicle model
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateVehicleRequest'
+      responses:
+        "201":
+          description: Created response
+          schema:
+            allOf:
+            - $ref: '#/definitions/components.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/dto.DBVehicleDTO'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a vehicle
+      tags:
+      - Vehicles
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  AuthBearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

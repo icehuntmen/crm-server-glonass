@@ -13,11 +13,15 @@ const (
 	OtpNotValid = "Otp invalid"
 
 	// User
-	EmailExists       = "Email exists"
+	EmailExists       = "Email already exists"
+	EmailNotExists    = "Member not exists"
 	UsernameExists    = "Username exists"
 	UsernameNotExists = "Username not exists"
 	PermissionDenied  = "Permission denied"
 
 	// DB
 	RecordNotFound = "record not found"
+
+	// Role
+	RoleExists = "Role with such name already exists"
 )

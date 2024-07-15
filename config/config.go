@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/go-yaml/yaml"
+	version "github.com/icehuntmen/husky/versions"
 	"log"
 	"os"
 	"time"
@@ -47,7 +48,7 @@ type Config struct {
 		Host               string        `yaml:"host"`
 		Port               int           `yaml:"port"`
 		Password           string        `yaml:"password"`
-		Db                 int           `yaml:"db"`
+		Db                 int           `yaml:"mongox"`
 		DialTimeout        time.Duration `json:"dialTimeout"`
 		ReadTimeout        time.Duration `json:"readTimeout"`
 		WriteTimeout       time.Duration `json:"writeTimeout"`
@@ -74,6 +75,7 @@ type Config struct {
 		AccessTokenExpireDuration  time.Duration `yaml:"accessTokenExpireDuration"`
 		RefreshTokenExpireDuration time.Duration `yaml:"refreshTokenExpireDuration"`
 	}
+	Version string
 }
 
 func GetConfig() *Config {
@@ -88,6 +90,11 @@ func GetConfig() *Config {
 		log.Fatalf("Error in parse config %v", err)
 	}
 
+	version, err := version.GetVCS()
+	if err != nil {
+		log.Fatalf("Error in get version %v", err)
+	}
+	cfg.Version = version
 	return cfg
 }
 
@@ -107,6 +114,8 @@ func LoadConfig(filename string, fileType string) ([]byte, error) {
 	}
 	return yamlFile, nil
 }
+
+var Version string
 
 func getConfigPath(env string) string {
 	if env == "docker" {
