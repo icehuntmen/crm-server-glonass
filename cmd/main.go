@@ -16,6 +16,7 @@ func main() {
 	conf := config.GetConfig()
 	ctx := context.TODO()
 
+	// Logger info
 	logger.Info(logging.General, logging.StartUp, "Started server...", map[logging.ExtraKey]interface{}{"Version": conf.Version})
 
 	database, _ := mongox.Connection(conf, ctx, logger)
