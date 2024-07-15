@@ -1,10 +1,10 @@
 repos:
   - repo: https://github.com/icehuntmen/go-version-commit
-    rev: v1.0.9
+    rev: v1.0.1
     hooks:
       - id: increment-patch-version
         name: Increment Patch Version
-        entry: go run github.com/icehuntmen/go-version-commit@v1.0.9 patch
+        entry: go run github.com/icehuntmen/go-version-commit@v1.0.1 patch
         language: golang
         pass_filenames: false
         always_run: true
