@@ -38,11 +38,20 @@ func NewMemberService(db *mongo.Database, cfg *config.Config, ctx context.Contex
 	}
 }
 
-func (m *MemberService) Register(memberCreate *dto.MemberCreate) error {
+func (m *MemberService) Register(memberCreate *dto.MemberRegistration) error {
 
 	memberCreate.ID = tools.GenerateUUID()
 	memberCreate.CreateAt = time.Now()
 	memberCreate.UpdatedAt = memberCreate.CreateAt
+	memberCreate.Birthday = memberCreate.CreateAt
+
+	rolesCollection := m.Mongo.Collection("roles")
+
+	role, err := findRoleByName(m.ctx, rolesCollection, "member")
+	if err != nil {
+		panic(err)
+	}
+	memberCreate.Role = []models.MemberRole{*role}
 
 	opt := options.Index()
 	opt.SetUnique(true)
@@ -83,7 +92,7 @@ func (m *MemberService) Register(memberCreate *dto.MemberCreate) error {
 
 func (m *MemberService) Login(req *dto.MemberAuth) (*dto.TokenDetail, error) {
 
-	exists, err := m.existEmail(req.Email)
+	exists, err := m.ExistEmail(req.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -104,6 +113,10 @@ func (m *MemberService) Login(req *dto.MemberAuth) (*dto.TokenDetail, error) {
 
 	tdto := tokenDto{Id: member.ID, MobileNumber: member.Phone, Email: member.Email}
 
+	for _, role := range member.Role {
+		tdto.Roles = append(tdto.Roles, role.Name)
+	}
+
 	fmt.Printf("tdto: %v", tdto)
 
 	token, err := m.tokenService.GenerateToken(&tdto)
@@ -119,7 +132,7 @@ func (m *MemberService) Update(req *dto.MemberUpdate) (*dto.MemberResponse, erro
 
 }
 
-func (m *MemberService) existEmail(email string) (bool, error) {
+func (m *MemberService) ExistEmail(email string) (bool, error) {
 	query := bson.M{"email": email}
 	var member *models.Member
 	err := m.Collection.FindOne(m.ctx, query).Decode(&member)
@@ -130,4 +143,23 @@ func (m *MemberService) existEmail(email string) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+func chooseRole(member *models.Member, roleName string) (models.MemberRole, error) {
+	for _, role := range member.Role {
+		if role.Name == roleName {
+			return role, nil
+		}
+	}
+	return models.MemberRole{}, fmt.Errorf("role '%s' not found for member", roleName)
+}
+
+func findRoleByName(ctx context.Context, collection *mongo.Collection, name string) (*models.MemberRole, error) {
+	var role *models.MemberRole
+	query := bson.M{"name": name}
+	err := collection.FindOne(ctx, query).Decode(&role)
+	if err != nil {
+		return nil, err
+	}
+	return role, nil
 }

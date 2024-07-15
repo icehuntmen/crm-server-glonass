@@ -24,7 +24,7 @@ func Authentication(cfg *config.Config) gin.HandlerFunc {
 		if auth == "" {
 			err = &service_errors.ServiceError{EndUserMessage: service_errors.TokenRequired}
 		} else {
-			claimMap, err = tokenService.GetClaims(token[1])
+			claimMap, err = tokenService.GetClaims(token[0])
 			if err != nil {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
@@ -41,9 +41,6 @@ func Authentication(cfg *config.Config) gin.HandlerFunc {
 		}
 
 		c.Set(constants.UserIdKey, claimMap[constants.UserIdKey])
-		c.Set(constants.FirstNameKey, claimMap[constants.FirstNameKey])
-		c.Set(constants.LastNameKey, claimMap[constants.LastNameKey])
-		c.Set(constants.UserNameKey, claimMap[constants.UserNameKey])
 		c.Set(constants.EmailKey, claimMap[constants.EmailKey])
 		c.Set(constants.MobileNumberKey, claimMap[constants.MobileNumberKey])
 		c.Set(constants.RolesKey, claimMap[constants.RolesKey])

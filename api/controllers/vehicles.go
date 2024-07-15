@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"crm-glonass/api/components"
 	"crm-glonass/api/dto"
 	"crm-glonass/api/services"
 	"crm-glonass/config"
@@ -48,12 +49,12 @@ func (vc *VehiclesController) Create(ctx *gin.Context) {
 	newPost, err := vc.service.Create(vehicle)
 
 	if err != nil {
-		// handle error
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		ctx.AbortWithStatusJSON(components.TranslateErrorToStatusCode(err),
+			components.GenerateBaseResponseWithError(nil, false, components.InternalError, err))
 		return
 	}
+	ctx.JSON(http.StatusCreated, components.GenerateBaseResponse(newPost, true, components.Success))
 
-	ctx.JSON(http.StatusCreated, gin.H{"status": "success", "data": newPost})
 }
 
 func (vc *VehiclesController) Update(ctx *gin.Context) {

@@ -75,7 +75,7 @@ definitions:
         example: calista78Batista
         type: string
     type: object
-  dto.MemberCreate:
+  dto.MemberRegistration:
     properties:
       email:
         example: user@comecord.com
@@ -151,34 +151,6 @@ paths:
       summary: Health Check
       tags:
       - Health Check
-  /api/v1/members/:
-    post:
-      consumes:
-      - application/json
-      description: Registration a member
-      parameters:
-      - description: member
-        in: body
-        name: Request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.MemberCreate'
-      responses:
-        "201":
-          description: Success
-          schema:
-            $ref: '#/definitions/components.BaseHttpResponse'
-        "400":
-          description: Failed
-          schema:
-            $ref: '#/definitions/components.BaseHttpResponse'
-        "409":
-          description: Failed
-          schema:
-            $ref: '#/definitions/components.BaseHttpResponse'
-      summary: Registration a member
-      tags:
-      - Members
   /api/v1/members/login:
     post:
       consumes:
@@ -205,6 +177,34 @@ paths:
           schema:
             $ref: '#/definitions/components.BaseHttpResponse'
       summary: Login a member
+      tags:
+      - Members
+  /api/v1/members/register:
+    post:
+      consumes:
+      - application/json
+      description: Registration a member
+      parameters:
+      - description: member
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MemberRegistration'
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/components.BaseHttpResponse'
+      summary: Registration a member
       tags:
       - Members
   /api/v1/roles/create:
@@ -290,6 +290,8 @@ paths:
       tags:
       - Vehicles
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  AuthBearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

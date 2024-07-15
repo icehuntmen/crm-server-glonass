@@ -18,7 +18,7 @@ type MemberResponse struct {
 	UpdatedAt  time.Time             `json:"updatedAt,omitempty" bson:"updatedAt,omitempty"`
 }
 
-type MemberCreate struct {
+type MemberRegistration struct {
 	ID         string                `json:"-" bson:"_id,omitempty"`
 	FirstName  string                `json:"-"`
 	LastName   string                `json:"-"`

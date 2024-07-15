@@ -27,18 +27,19 @@ func NewMemberController(db *mongo.Database, ctx context.Context, conf *config.C
 }
 
 // Register Member godoc
+//
 //	@Summary		Registration a member
 //	@Description	Registration a member
 //	@Tags			Members
 //	@Accept			json
 //	@produces		json
-//	@Param			Request	body		dto.MemberCreate			true	"member"
+//	@Param			Request	body		dto.MemberRegistration			true	"member"
 //	@Success		201		{object}	components.BaseHttpResponse	"Success"
 //	@Failure		400		{object}	components.BaseHttpResponse	"Failed"
 //	@Failure		409		{object}	components.BaseHttpResponse	"Failed"
-//	@Router			/api/v1/members/ [post]
+//	@Router			/api/v1/members/register [post]
 func (mc *MemberController) Register(ctx *gin.Context) {
-	member := new(dto.MemberCreate)
+	member := new(dto.MemberRegistration)
 	err := ctx.ShouldBindJSON(member)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest,
@@ -52,11 +53,12 @@ func (mc *MemberController) Register(ctx *gin.Context) {
 			components.GenerateBaseResponseWithError(nil, false, components.InternalError, err))
 		return
 	}
-	ctx.JSON(http.StatusCreated, components.GenerateBaseResponse(nil, true, components.Success))
+	ctx.JSON(http.StatusCreated, components.GenerateBaseResponse("Member created", true, components.Success))
 
 }
 
 // Login Member godoc
+//
 //	@Summary		Login a member
 //	@Description	Login a member
 //	@Tags			Members

@@ -39,6 +39,7 @@ func NewVehicleService(db *mongo.Database, cfg *config.Config, ctx context.Conte
 // - *dto.DBVehicle: The newly created post.
 // - error: An error if the creation operation fails.
 func (p *VehicleService) Create(vehicle *dto.CreateVehicleRequest) (*dto.DBVehicle, error) {
+	vehicle.ID = tools.GenerateUUID()
 	vehicle.CreatedAt = time.Now()
 	vehicle.UpdatedAt = vehicle.CreatedAt
 	fmt.Println(vehicle)

@@ -48,49 +48,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/members/": {
-            "post": {
-                "description": "Registration a member",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Members"
-                ],
-                "summary": "Registration a member",
-                "parameters": [
-                    {
-                        "description": "member",
-                        "name": "Request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.MemberCreate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/components.BaseHttpResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Failed",
-                        "schema": {
-                            "$ref": "#/definitions/components.BaseHttpResponse"
-                        }
-                    },
-                    "409": {
-                        "description": "Failed",
-                        "schema": {
-                            "$ref": "#/definitions/components.BaseHttpResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/members/login": {
             "post": {
                 "description": "Login a member",
@@ -114,6 +71,49 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/components.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/members/register": {
+            "post": {
+                "description": "Registration a member",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Registration a member",
+                "parameters": [
+                    {
+                        "description": "member",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.MemberRegistration"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/components.BaseHttpResponse"
@@ -374,7 +374,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.MemberCreate": {
+        "dto.MemberRegistration": {
             "type": "object",
             "required": [
                 "password"
@@ -447,8 +447,10 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
+        "AuthBearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     },
     "externalDocs": {

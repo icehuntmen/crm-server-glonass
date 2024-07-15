@@ -1,7 +1,6 @@
 package dto
 
 import (
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -24,6 +23,7 @@ type DBVehicleDTO struct {
 }
 
 type CreateVehicleRequest struct {
+	ID        string    `json:"-" bson:"_id,omitempty"`
 	Name      string    `json:"name,omitempty" bson:"name,omitempty"`
 	Model     string    `json:"model,omitempty" bson:"model,omitempty"`
 	Year      int       `json:"year,omitempty" bson:"year,omitempty"`
@@ -34,7 +34,7 @@ type CreateVehicleRequest struct {
 }
 
 type DBVehicle struct {
-	ID        uuid.UUID `json:"id,omitempty" bson:"_id,omitempty"`
+	ID        string    `json:"id,omitempty" bson:"_id,omitempty"`
 	Name      string    `json:"name,omitempty" bson:"name,omitempty"`
 	Model     string    `json:"model,omitempty" bson:"model,omitempty"`
 	Year      int       `json:"year,omitempty" bson:"year,omitempty"`

@@ -63,7 +63,9 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@securityDefinitions.basic	BasicAuth
+//	@securityDefinitions.apikey	AuthBearer
+//	@in							header
+//	@name						Authorization
 
 // @externalDocs.description	OpenAPI
 // @externalDocs.url			https://swagger.io/resources/open-api/
@@ -72,7 +74,7 @@ func RegisterRouter(r *gin.Engine, conf *config.Config, db *mongo.Database) {
 	v1 := api.Group("/v1")
 	{
 
-		vehicles := v1.Group("/vehicles", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
+		vehicles := v1.Group("/vehicles", middlewares.Authentication(conf), middlewares.Authorization([]string{"member"}))
 		routers.Vehicles(vehicles, db)
 
 		membersRouterGroup := v1.Group("/members")

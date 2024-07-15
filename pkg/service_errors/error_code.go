@@ -13,7 +13,7 @@ const (
 	OtpNotValid = "Otp invalid"
 
 	// User
-	EmailExists       = "Email exists"
+	EmailExists       = "Email already exists"
 	EmailNotExists    = "Member not exists"
 	UsernameExists    = "Username exists"
 	UsernameNotExists = "Username not exists"
