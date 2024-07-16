@@ -4,6 +4,7 @@ import (
 	"crm-glonass/config"
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/mattn/go-colorable"
 	"github.com/natefinch/lumberjack"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -15,6 +16,15 @@ var logrusLogger *logrus.Logger
 
 type logrusLoggerWrapper struct {
 	cfg *config.Config
+}
+
+type CustomFormatter struct {
+	logrus.TextFormatter
+}
+
+func (f *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	entry.Message = "\033[1;34m" + entry.Message + "\033[0m" // Пример для синего цвета
+	return f.TextFormatter.Format(entry)
 }
 
 func newLogrusLogger(cfg *config.Config) *logrusLoggerWrapper {
@@ -46,14 +56,15 @@ func (l *logrusLoggerWrapper) Init() {
 	logrusLogger = logrus.New()
 	logrusLogger.SetLevel(l.getLogLevel())
 
-	// Настройка кастомного формата логов
 	logrusLogger.SetFormatter(&logrus.TextFormatter{
-		DisableColors:    false,
 		FullTimestamp:    true,
+		ForceColors:      true,
 		TimestampFormat:  time.RFC3339,
 		QuoteEmptyFields: true,
 	})
-	logrusLogger.SetOutput(os.Stdout) // Вывод в стандартный поток вывода
+
+	logrusLogger.SetOutput(colorable.NewColorableStdout())
+
 }
 
 func (l *logrusLoggerWrapper) InitFile() {
@@ -104,6 +115,7 @@ func (l *logrusLoggerWrapper) register() {
 	}
 
 	writer := io.MultiWriter(os.Stdout, file)
+
 	logrusLogger.SetOutput(writer)
 
 	logrusLogger.SetFormatter(&logrus.JSONFormatter{
