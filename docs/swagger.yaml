@@ -351,12 +351,13 @@ paths:
           schema:
             $ref: '#/definitions/components.BaseHttpResponse'
       security:
-      - AuthBearer: []
+      - BearerAuth: []
       summary: Create a vehicle
       tags:
       - Vehicles
 securityDefinitions:
-  AuthBearer:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and then your token.
     in: header
     name: Authorization
     type: apiKey

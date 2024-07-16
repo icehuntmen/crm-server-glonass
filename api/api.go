@@ -32,7 +32,7 @@ func InitialServer(cfg *config.Config, database *mongo.Database, logger logging.
 	RegisterRouter(r, cfg, database)
 	RegisterSwagger(r, cfg)
 
-	logger.Info(logging.API, logging.StartUp, "Started API", nil)
+	logger.Info(logging.API, logging.Connection, fmt.Sprintf("Starting server on port:%d", cfg.Server.IPort), nil)
 	err := r.Run(fmt.Sprintf(":%d", cfg.Server.IPort))
 	if err != nil {
 		logger.Fatal(logging.API, logging.StartUp, err.Error(), nil)
@@ -63,9 +63,10 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@securityDefinitions.apikey	AuthBearer
-//	@in							header
-//	@name						Authorization
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and then your token.
 
 // @externalDocs.description	OpenAPI
 // @externalDocs.url			https://swagger.io/resources/open-api/

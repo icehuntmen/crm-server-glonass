@@ -36,14 +36,14 @@ type Config struct {
 		AllowOrigins string `yaml:"allowOrigins"`
 	}
 	MongoX struct {
-		Host        string `yaml:"host"`
-		Port        string `yaml:"port"`
-		Username    string `yaml:"username"`
-		Password    string `yaml:"password"`
-		Database    string `yaml:"database"`
-		ReplicaName string `yaml:"replicaName"`
-		Replication string `yaml:"replication"`
-		AuthSource  string `yaml:"authSource"`
+		Host           string `yaml:"host"`
+		Port           string `yaml:"port"`
+		Username       string `yaml:"username"`
+		Password       string `yaml:"password"`
+		Database       string `yaml:"database"`
+		ReplicaSet     string `yaml:"replicaSet"`
+		ReadPreference string `yaml:"readPreference"`
+		AuthSource     string `yaml:"authSource"`
 	}
 	Redis struct {
 		Host               string        `yaml:"host"`

@@ -18,13 +18,25 @@ func Authentication(cfg *config.Config) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		var err error
+		var token string
 		claimMap := map[string]interface{}{}
 		auth := c.GetHeader(constants.AuthorizationHeaderKey)
-		token := strings.Split(auth, " ")
+		tokenParts := strings.Split(auth, " ")
+		fmt.Printf("tokenParts: %v\n", auth)
+		if tokenParts[0] != "Bearer" {
+			err = &service_errors.ServiceError{EndUserMessage: service_errors.TokenBearer}
+			c.AbortWithStatusJSON(http.StatusUnauthorized,
+				components.GenerateBaseResponseWithError(nil, false, components.AuthError, err))
+			return
+		} else {
+			token = tokenParts[1]
+		}
+
 		if auth == "" {
 			err = &service_errors.ServiceError{EndUserMessage: service_errors.TokenRequired}
 		} else {
-			claimMap, err = tokenService.GetClaims(token[0])
+			claimMap, err = tokenService.GetClaims(token)
+
 			if err != nil {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
@@ -46,7 +58,6 @@ func Authentication(cfg *config.Config) gin.HandlerFunc {
 		c.Set(constants.RolesKey, claimMap[constants.RolesKey])
 		c.Set(constants.ExpireTimeKey, claimMap[constants.ExpireTimeKey])
 
-		c.Next()
 	}
 }
 

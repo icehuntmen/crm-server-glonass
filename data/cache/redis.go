@@ -64,3 +64,53 @@ func Get[T any](ctx context.Context, c *redis.Client, key string) (T, error) {
 	}
 	return dest, nil
 }
+
+func HSet[T any](ctx context.Context, c *redis.Client, hashKey string, field string, value T) error {
+	v, err := json.Marshal(value)
+	if err != nil {
+		return err
+	}
+	return c.HSet(ctx, hashKey, field, v).Err()
+}
+
+func HGet[T any](ctx context.Context, c *redis.Client, hashKey string, field string) (T, error) {
+	var dest T = *new(T)
+	v, err := c.HGet(ctx, hashKey, field).Result()
+	if err != nil {
+		return dest, err
+	}
+	err = json.Unmarshal([]byte(v), &dest)
+	if err != nil {
+		return dest, err
+	}
+	return dest, nil
+}
+
+func ZAdd[T any](ctx context.Context, c *redis.Client, zsetKey string, score float64, value T) error {
+	v, err := json.Marshal(value)
+	if err != nil {
+		return err
+	}
+	return c.ZAdd(ctx, zsetKey, &redis.Z{
+		Score:  score,
+		Member: v,
+	}).Err()
+}
+
+func ZRange[T any](ctx context.Context, c *redis.Client, zsetKey string, start, stop int64) ([]T, error) {
+	vals, err := c.ZRange(ctx, zsetKey, start, stop).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	var result []T
+	for _, v := range vals {
+		var dest T
+		err = json.Unmarshal([]byte(v), &dest)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, dest)
+	}
+	return result, nil
+}

@@ -8,6 +8,7 @@ const (
 	General         Category = "General"
 	Internal        Category = "Internal"
 	MongoDB         Category = "Mongo"
+	Swagger         Category = "Swagger"
 	Redis           Category = "Redis"
 	API             Category = "API"
 	RequestResponse Category = "RequestResponse"
@@ -18,6 +19,7 @@ const (
 )
 
 const (
+	Link            SubCategory = "Link"
 	Connection      SubCategory = "Connection"
 	Disconnection   SubCategory = "Disconnection"
 	Create          SubCategory = "Create"
