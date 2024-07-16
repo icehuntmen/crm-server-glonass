@@ -3,7 +3,7 @@ server:
   timeZone: Europe/Moscow
   internalPort: 5100
   externalPort: 5100
-  runMode: debug
+  runMode: release
   emailFrom: tester@comecord.com
   smtpHost: smtp.comecord.com
   smtpPort: 587

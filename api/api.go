@@ -32,7 +32,7 @@ func InitialServer(cfg *config.Config, database *mongo.Database, logger logging.
 	RegisterRouter(r, cfg, database)
 	RegisterSwagger(r, cfg)
 
-	logger.Info(logging.API, logging.StartUp, "Started API", nil)
+	logger.Info(logging.API, logging.Connection, fmt.Sprintf("Starting server on port:%d", cfg.Server.IPort), nil)
 	err := r.Run(fmt.Sprintf(":%d", cfg.Server.IPort))
 	if err != nil {
 		logger.Fatal(logging.API, logging.StartUp, err.Error(), nil)

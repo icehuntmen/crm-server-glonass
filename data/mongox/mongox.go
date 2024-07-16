@@ -14,6 +14,7 @@ import (
 
 var (
 	clientInstance      *mongo.Client
+	clientDatabase      *mongo.Database
 	clientInstanceError error
 	mongoOnce           sync.Once
 )
@@ -50,7 +51,7 @@ func Connection(conf *config.Config, ctx context.Context, logger logging.Logger)
 	return clientInstance.Database(conf.MongoX.Database), nil
 }
 
-func GetMongoClient(conf *config.Config) (*mongo.Client, error) {
+func GetMongoClient(conf *config.Config) (*mongo.Database, *mongo.Client, error) {
 	mongoUrl := fmt.Sprintf(`mongodb://%s:%s@%s:%s/%s?authSource=%s`,
 		conf.MongoX.Username, conf.MongoX.Password, conf.MongoX.Host, conf.MongoX.Port,
 		conf.MongoX.Database, conf.MongoX.AuthSource)
@@ -63,11 +64,11 @@ func GetMongoClient(conf *config.Config) (*mongo.Client, error) {
 	if conf.MongoX.ReadPreference != "" {
 		mode, err := readpref.ModeFromString(conf.MongoX.ReadPreference)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		readPref, err := readpref.New(mode)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		clientOptions.SetReadPreference(readPref)
 	}
@@ -80,9 +81,9 @@ func GetMongoClient(conf *config.Config) (*mongo.Client, error) {
 			return
 		}
 
-		db := client.Database(conf.MongoX.Database)
-		if db == nil {
-			db = client.Database(conf.MongoX.Database)
+		clientDatabase = client.Database(conf.MongoX.Database)
+		if clientDatabase == nil {
+			clientDatabase = client.Database(conf.MongoX.Database)
 		}
 
 		err = client.Ping(context.TODO(), nil)
@@ -94,5 +95,12 @@ func GetMongoClient(conf *config.Config) (*mongo.Client, error) {
 		clientInstance = client
 	})
 
-	return clientInstance, clientInstanceError
+	return clientDatabase, clientInstance, clientInstanceError
+}
+
+func CloseMongoClient() error {
+	if clientInstance != nil {
+		return clientInstance.Disconnect(context.TODO())
+	}
+	return nil
 }

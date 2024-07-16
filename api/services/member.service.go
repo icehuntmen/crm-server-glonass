@@ -23,6 +23,7 @@ type MemberService struct {
 	ctx          context.Context
 	logger       logging.Logger
 	tokenService *TokenService
+	config       *config.Config
 }
 
 func NewMemberService(db *mongo.Database, cfg *config.Config, ctx context.Context, collectionName string) MemberInterface {
@@ -35,6 +36,7 @@ func NewMemberService(db *mongo.Database, cfg *config.Config, ctx context.Contex
 			logger: logging.NewLogger(cfg),
 			cfg:    cfg,
 		},
+		config: cfg,
 	}
 }
 
