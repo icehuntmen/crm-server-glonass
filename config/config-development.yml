@@ -1,6 +1,7 @@
 
 server:
   timeZone: Europe/Moscow
+  domain: localhost
   internalPort: 5100
   externalPort: 5100
   runMode: debug
