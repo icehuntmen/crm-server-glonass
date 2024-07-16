@@ -4,7 +4,7 @@ server:
   domain: localhost
   internalPort: 5100
   externalPort: 5100
-  runMode: release
+  runMode: debug
   emailFrom: tester@comecord.com
   smtpHost: smtp.comecord.com
   smtpPort: 587

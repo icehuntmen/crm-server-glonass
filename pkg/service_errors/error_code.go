@@ -5,8 +5,10 @@ const (
 	UnExpectedError = "Expected error"
 	ClaimsNotFound  = "Claims not found"
 	TokenRequired   = "Требуеться токен для авторизации в системе"
+	TokenBearer     = "Требуеться токен для авторизации в системе"
 	TokenExpired    = "Токен устарел"
 	TokenInvalid    = "Токен недействителен"
+
 	// OTP
 	OtpExists   = "Otp exists"
 	OtpUsed     = "Otp used"
