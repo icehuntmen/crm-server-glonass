@@ -216,7 +216,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "AuthBearer": []
+                        "BearerAuth": []
                     }
                 ],
                 "description": "Create a vehicle",
@@ -447,7 +447,8 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "AuthBearer": {
+        "BearerAuth": {
+            "description": "Type \"Bearer\" followed by a space and then your token.",
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"
