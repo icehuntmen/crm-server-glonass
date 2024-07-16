@@ -24,7 +24,7 @@ func main() {
 
 	body := []byte(`{
 		"login": "demo",
-  		"password": "%%demo%%"
+  		"password": "$$demo$$"
 	}`)
 
 	r, err := http.NewRequest("POST", posturl, bytes.NewBuffer(body))
@@ -33,7 +33,7 @@ func main() {
 	}
 
 	r.Header.Add("Content-Type", "application/json")
-	r.Header.Add("User-Agent", "")
+	r.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
 
 	client := &http.Client{}
 	res, err := client.Do(r)
