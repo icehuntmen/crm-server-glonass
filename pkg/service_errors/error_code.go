@@ -5,6 +5,7 @@ const (
 	UnExpectedError = "Expected error"
 	ClaimsNotFound  = "Claims not found"
 	TokenRequired   = "token required"
+	TokenBearer     = "Bearer not found in token header"
 	TokenExpired    = "token expired"
 	TokenInvalid    = "token invalid"
 	// OTP
